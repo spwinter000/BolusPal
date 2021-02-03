@@ -1,3 +1,15 @@
 .welcome {
     float: right;
 }
+
+.settings-div-outer{
+    margin-top: 40px;
+    text-align: center;
+    width: 200px;
+    margin:0 auto;
+}
+
+.settings-div-inner{
+    text-align: left;
+    width: 200px;
+}

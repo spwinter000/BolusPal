@@ -12,6 +12,7 @@ const NavBar = () => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav">
                 {/* <ul className="navbar-nav"> */}
+                {/* <ul className="navbar-nav"> */}
                 <li className="nav-item">
                         <NavLink className="nav-link" to="/boluses">My Boluses</NavLink>
                 </li>
@@ -19,7 +20,7 @@ const NavBar = () => {
                         <NavLink className="nav-link" to="/profile">Profile</NavLink>
                 </li>
                 {/* </ul> */}
-                </div>dfdg
+                </div>
             </div>
         </nav >
     )

@@ -11,7 +11,6 @@ class App extends Component {
         super(props);
         this.state = {
             data: [],
-            // test: 'hiiiiiiisfsf',
             loaded: false,
             placeholder: "Loading"
         }
