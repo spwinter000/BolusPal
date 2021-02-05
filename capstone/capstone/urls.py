@@ -43,5 +43,7 @@ urlpatterns = [
     path("", include("bolus_pal_frontend.urls")),
     path("boluses", include("bolus_pal_frontend.urls")),
     path("profile", include("bolus_pal_frontend.urls")),
+    path("login", include("bolus_pal_frontend.urls")),
+    path("register", include("bolus_pal_frontend.urls")),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

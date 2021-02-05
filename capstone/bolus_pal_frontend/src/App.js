@@ -5,6 +5,8 @@ import NavBar from './components/NavBar';
 import BolusList from './components/BolusList';
 import Profile from './components/Profile';
 import './index.css'
+import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
 
 class App extends Component {
     constructor(props){
@@ -52,6 +54,8 @@ class App extends Component {
                 <Switch>
                     <Route path="/boluses" component={BolusList}></Route>
                     <Route path="/profile" component={Profile}></Route>
+                    <Route path="/login" component={LoginForm}></Route>
+                    <Route path="/register" component={RegisterForm}></Route>
                 </Switch>
             </div>
         );

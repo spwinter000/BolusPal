@@ -108,7 +108,6 @@ class Profile extends Component {
     //     }
     // }
 
-
     render() {
         // let high_threshold = '';
         // let low_threshold = '';

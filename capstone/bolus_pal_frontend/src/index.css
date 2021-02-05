@@ -3,13 +3,33 @@
 }
 
 .settings-div-outer{
-    margin-top: 40px;
     text-align: center;
     width: 200px;
     margin:0 auto;
+    margin-top: 40px;
 }
 
 .settings-div-inner{
     text-align: left;
     width: 200px;
+}
+
+ /* LOGIN/REGISTER */
+ .login{
+    position: absolute;
+    margin-top: 170px;
+    /* top: 30%; */
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+ }
+
+ .register{
+    position: absolute;
+    margin-top: 170px;
+    /* top: 30%; */
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    /* border: 1px solid black; */
 }
