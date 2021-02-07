@@ -13,9 +13,9 @@ class RegisterForm extends Component {
         return ( 
         <div className="register">
             <h2>Register</h2>
-            <form action="" enctype="multipart/form-data" method="post">
+            <form action="" encType="multipart/form-data" method="post">
                 <div className="form-group">
-                    <input className="form-control" autofocus type="text" name="username" placeholder="Username" required/>
+                    <input className="form-control" autoFocus type="text" name="username" placeholder="Username" required/>
                 </div>
                 <div className="form-group">
                     <input className="form-control" type="email" name="email" placeholder="Email Address" required/>

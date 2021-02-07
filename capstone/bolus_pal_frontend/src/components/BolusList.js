@@ -39,7 +39,7 @@ class BolusList extends Component {
         render() {
             return (
             <div>
-                <h1>Your Boluses</h1>
+                <h2>Your Boluses</h2>
                 <button onClick={this.handleNewBolus}>Add New Bolus</button>
             <ul>
             {this.state.data.map(function(item, i) {
