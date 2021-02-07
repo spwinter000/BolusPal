@@ -4,9 +4,9 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import NavBar from './components/NavBar';
 import BolusList from './components/BolusList';
 import Profile from './components/Profile';
-import './index.css'
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
+import './index.css'
 
 class App extends Component {
     constructor(props){

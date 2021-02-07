@@ -5,24 +5,30 @@ const UserInfo = ({data}) => {
 // const UserInfo = ({highThresholds, lowThresholds, carbsPerUnit}) => {
 
   function getHighThreshold(arr){
-    const map = arr.map(element => 
-      element[0].high_threshold)
-    return map
+    for (let [key, value] of arr.entries()){
+      if (key === 0){
+        return value[0].high_threshold
+      }
+    }
   }
 
   function getLowThreshold(arr){
-    const map = arr.map(element => 
-      element[0].low_threshold)
-    return map
+    for (let [key, value] of arr.entries()){
+      if (key === 1){
+        return value[0].low_threshold
+      }
+    }
   }
 
   function getCarbsPerUnit(arr){
-    const map = arr.map(element => 
-      element[0].carbs_per_unit)
-    return map
+    for (let [key, value] of arr.entries()){
+      if (key === 2){
+        return value[0].carbs_per_unit
+      }
+    }
   }
 
-    return ( 
+    return (
       <div className="settings-div-outer">
         <div className="settings-div-inner">
             <p>High Threshold: {getHighThreshold(data)}mg/dl</p>
