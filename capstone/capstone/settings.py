@@ -27,13 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'mysite.utils.my_jwt_response_handler'
+}
 
 # Application definition
 
 INSTALLED_APPS = [
     'bolus_pal',
-    'rest_framework',
     'bolus_pal_frontend',
+    'rest_framework',
     'corsheaders', # added for JWT authentication
     'django.contrib.admin',
     'django.contrib.auth',

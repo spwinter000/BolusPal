@@ -41,7 +41,7 @@ router.register(r'days', views.DayViewSet)
 urlpatterns = [
     path('api/', include(router.urls)),
     path("admin/", admin.site.urls),
-    # path("", include("bolus_pal.urls")),
+    path("bolus_pal/", include("bolus_pal.urls")),
     path("", include("bolus_pal_frontend.urls")),
     path("boluses", include("bolus_pal_frontend.urls")),
     path("profile", include("bolus_pal_frontend.urls")),
