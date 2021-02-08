@@ -25,6 +25,8 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
 from bolus_pal import views
+from rest_framework_jwt.views import obtain_jwt_token
+
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet) # all users
@@ -46,4 +48,5 @@ urlpatterns = [
     path("login", include("bolus_pal_frontend.urls")),
     path("register", include("bolus_pal_frontend.urls")),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('token-auth/', obtain_jwt_token),
 ]

@@ -45,8 +45,13 @@ class BolusList extends Component {
             {this.state.data.map(function(item, i) {
                 return (
                     <li key={i}>
-                {item.user} - {item.high_threshold} - {item.low_threshold} - {item.carbs_per_unit} 
-                - {item.carb_total} - {item.blood_sugar} - {item.bolus_total}
+                {item.user} 
+                - Low threshold: {item.high_threshold} <br/>
+                - High threshold: {item.low_threshold} <br/>
+                - Carbs per unit: {item.carbs_per_unit} <br/>
+                - Carbohydrate total: {item.carb_total} <br/>
+                - Blood sugar: {item.blood_sugar}mg/dl <br/>
+                - Bolus Total: {item.bolus_total}<br/>
                 </li>
                 );
             })}
