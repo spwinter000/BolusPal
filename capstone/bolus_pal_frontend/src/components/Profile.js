@@ -15,29 +15,49 @@ class Profile extends Component {
         }
     }
 
-    componentDidMount(){
-        const urls = ["api/high_thresholds", "api/low_thresholds", "api/carbs_per_units"];  
-        Promise.all(urls.map(url => 
-            fetch(url)
-                .then(response => {
-                if (response.status > 400) {
-                    return this.setState(() => {
-                    return { placeholder: "Something went wrong!" };
-                    });
-                }
-                return response.json();
-                })
-                ) )
-                .then(data => {
-                    this.setState(() => {
-                        return {
-                            data,
-                            loaded: true
-                        };
-                    });
-                    // console.log(data)
-                    })
-    }
+    // componentDidMount(){
+    //     const urls = ["api/high_thresholds", "api/low_thresholds", "api/carbs_per_units"];  
+    //     Promise.all(urls.map(url => 
+    //         fetch(url)
+    //             .then(response => {
+    //             if (response.status > 400) {
+    //                 return this.setState(() => {
+    //                 return { placeholder: "Something went wrong!" };
+    //                 });
+    //             }
+    //             return response.json();
+    //             })
+    //             ) )
+    //             .then(data => {
+    //                 this.setState(() => {
+    //                     return {
+    //                         data,
+    //                         loaded: true
+    //                     };
+    //                 });
+    //                 // console.log(data)
+    //                 })
+    // }
+
+    componentDidMount() {
+        fetch("api/users")
+            .then(response => {
+            if (response.status > 400) {
+                return this.setState(() => {
+                return { placeholder: "Something went wrong!" };
+                });
+            }
+            return response.json();
+            })
+            .then(data => {
+            this.setState(() => {
+                return {
+                data,
+                loaded: true
+                };
+            });
+            });
+        }
 
     render() {
         return ( 

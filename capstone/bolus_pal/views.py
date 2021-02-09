@@ -4,14 +4,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, High_threshold, Low_threshold, Carbs_per_unit, Bolus, Day
+from .models import CustomUser, Bolus, Day
 
 # rest framework and serialize imports
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSerializer, UserSerializerWithToken, BolusSerializer, HighThresholdSerializer, LowThresholdSerializer, CarbsPerUnitSerializer, DaySerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import MyTokenObtainPairSerializer
+from .serializers import CustomUserSerializer, UserSerializerWithToken, BolusSerializer, DaySerializer
 
 # function to be used anytime the user revisits the site, reloads the page, or does anything else that causes React to forget its state. 
 @api_view(['GET'])
@@ -21,6 +23,10 @@ def current_user(request):
     """
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+class ObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer
 
 class UserList(APIView):
     """
@@ -37,41 +43,41 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class CustomUserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
+    queryset = CustomUser.objects.all().order_by('-date_joined')
+    serializer_class = CustomUserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     # def get_current_user(self):
     #     user = self.request.user
     #     return Users.objects.filter(user=user)
 
-class HighThresholdViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows high thresholds to be viewed or edited.
-    """
-    queryset = High_threshold.objects.all()
-    serializer_class = HighThresholdSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class HighThresholdViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows high thresholds to be viewed or edited.
+#     """
+#     queryset = High_threshold.objects.all()
+#     serializer_class = HighThresholdSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
-class LowThresholdViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows low thresholds to be viewed or edited.
-    """
-    queryset = Low_threshold.objects.all()
-    serializer_class = LowThresholdSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class LowThresholdViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows low thresholds to be viewed or edited.
+#     """
+#     queryset = Low_threshold.objects.all()
+#     serializer_class = LowThresholdSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
-class CarbsPerUnitViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows carbs per unit number to be viewed or edited.
-    """
-    queryset = Carbs_per_unit.objects.all()
-    serializer_class = CarbsPerUnitSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class CarbsPerUnitViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows carbs per unit number to be viewed or edited.
+#     """
+#     queryset = Carbs_per_unit.objects.all()
+#     serializer_class = CarbsPerUnitSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
 class BolusViewSet(viewsets.ModelViewSet):
     """

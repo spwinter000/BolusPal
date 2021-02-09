@@ -4,36 +4,47 @@ import React from 'react';
 const UserInfo = ({data}) => {
 // const UserInfo = ({highThresholds, lowThresholds, carbsPerUnit}) => {
 
-  function getHighThreshold(arr){
-    for (let [key, value] of arr.entries()){
-      if (key === 0){
-        return value[0].high_threshold
-      }
-    }
-  }
+  // function getHighThreshold(arr){
+  //   for (let [key, value] of arr.entries()){
+  //     if (key === 0){
+  //       return value[0].high_threshold
+  //     }
+  //   }
+  // }
 
-  function getLowThreshold(arr){
-    for (let [key, value] of arr.entries()){
-      if (key === 1){
-        return value[0].low_threshold
-      }
-    }
-  }
+  // function getLowThreshold(arr){
+  //   for (let [key, value] of arr.entries()){
+  //     if (key === 1){
+  //       return value[0].low_threshold
+  //     }
+  //   }
+  // }
 
-  function getCarbsPerUnit(arr){
-    for (let [key, value] of arr.entries()){
-      if (key === 2){
-        return value[0].carbs_per_unit
-      }
-    }
-  }
-
+  // function getCarbsPerUnit(arr){
+  //   for (let [key, value] of arr.entries()){
+  //     if (key === 2){
+  //       return value[0].carbs_per_unit
+  //     }
+  //   }
+  // }
+console.log(data)
     return (
       <div className="settings-div-outer">
         <div className="settings-div-inner">
-            <p>High Threshold: {getHighThreshold(data)}mg/dl</p>
+          {data.map(function(user, i) {
+                  return (
+                      <li key={i}>
+                  - User: {user.username}<br/> 
+                  - Low threshold: {user.high_threshold} <br/>
+                  - High threshold: {user.low_threshold} <br/>
+                  - Carbs per unit: {user.carbs_per_unit} <br/>
+                  </li>
+                  );
+              })}
+
+            {/* <p>High Threshold: {getHighThreshold(data)}mg/dl</p>
             <p>Low Threshold: {getLowThreshold(data)}mg/dl</p>
-            <p>Carbs per unit: {getCarbsPerUnit(data)}g</p>
+            <p>Carbs per unit: {getCarbsPerUnit(data)}g</p> */}
         </div>
       </div>
      );

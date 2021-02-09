@@ -34,7 +34,9 @@ class BolusList extends Component {
             });
             console.log(data)
             });
+    
         }
+
 
         render() {
             return (
@@ -45,7 +47,7 @@ class BolusList extends Component {
             {this.state.data.map(function(item, i) {
                 return (
                     <li key={i}>
-                {item.user} 
+                - User: {item.user}<br/> 
                 - Low threshold: {item.high_threshold} <br/>
                 - High threshold: {item.low_threshold} <br/>
                 - Carbs per unit: {item.carbs_per_unit} <br/>
