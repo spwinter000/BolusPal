@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'mysite.utils.my_jwt_response_handler'
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'capstone.utils.my_jwt_response_handler'
 }
 
 # Application definition

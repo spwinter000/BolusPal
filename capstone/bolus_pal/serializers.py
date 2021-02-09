@@ -1,5 +1,6 @@
 # from django.contrib.auth.models import User, High_threshold, Low_threshold, Carbs_per_unit, Bolss, Day
 from .models import User, High_threshold, Low_threshold, Carbs_per_unit, Bolus, Day
+from rest_framework_jwt.settings import api_settings
 from rest_framework import serializers
 
 
