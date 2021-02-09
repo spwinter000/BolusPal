@@ -4,9 +4,8 @@ class LoginForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            data: [],
-            loaded: false,
-            placeholder: "Loading"
+            username: '',
+            password: ''        
         }
     }
     render() { 
