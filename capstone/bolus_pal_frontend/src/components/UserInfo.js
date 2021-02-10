@@ -27,18 +27,17 @@ const UserInfo = ({data}) => {
   //     }
   //   }
   // }
-console.log(data)
     return (
       <div className="settings-div-outer">
         <div className="settings-div-inner">
           {data.map(function(user, i) {
                   return (
-                      <li key={i}>
+                      <p key={i}>
                   - User: {user.username}<br/> 
                   - Low threshold: {user.high_threshold} <br/>
                   - High threshold: {user.low_threshold} <br/>
                   - Carbs per unit: {user.carbs_per_unit} <br/>
-                  </li>
+                  </p>
                   );
               })}
 

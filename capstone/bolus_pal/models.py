@@ -26,6 +26,7 @@ class Bolus(models.Model):
     # high_threshold = models.ForeignKey(High_threshold, on_delete=models.CASCADE)
     # low_threshold = models.ForeignKey(Low_threshold, on_delete=models.CASCADE)
     # carbs_per_unit = models.ForeignKey(Carbs_per_unit, on_delete=models.CASCADE)
+    # food items...
     carb_total = models.IntegerField(default=0)
     blood_sugar = models.IntegerField()
     # food_items = models ---> not sure yet

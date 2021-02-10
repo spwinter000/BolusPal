@@ -6,26 +6,15 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
 
-class CustomUserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['url', 'username', 'email', 'high_threshold', 'low_threshold', 'carbs_per_unit']
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    # handles the manual creation of a new token
-    @classmethod
-    def get_token(cls, user):
-        # manual creation of new token to add to user field
-        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
-
-        token['username'] = user.username
-        return token
-
-class UserSerializerWithToken(serializers.ModelSerializer):
-
-    token = serializers.SerializerMethodField()
+class CustomUserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    username = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'username', 'password', 'high_threshold', 'low_threshold', 'carbs_per_unit']
+        extra_kwargs = {'password': {'write_only': True}}
 
     # determines how object being serialized gets saved to the DB
     def create(self, validated_data):
@@ -36,10 +25,15 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    # indicate which model each serializer will be representing and which fields we want the serializer to include
-    class Meta:
-        model = CustomUser
-        fields = ('token', 'username', 'password')
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    # handles the manual creation of a new token
+    @classmethod
+    def get_token(cls, user):
+        # manual creation of new token to add to user field
+        token = super(MyTokenObtainPairSerializer, cls).get_token(user)
+
+        # token['username'] = user.username
+        return token
 
 # class HighThresholdSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
