@@ -12,6 +12,9 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
+            // displayed_form: '',
+            // logged_in: localStorage.getItem('token') ? true : false,
+            // username: '',
             data: [],
             loaded: false,
             placeholder: "Loading"

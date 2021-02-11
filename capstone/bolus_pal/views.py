@@ -39,6 +39,7 @@ class CustomUserCreate(APIView):
     method here too, for retrieving a list of all User objects.
     """
     permission_classes = (permissions.AllowAny,)
+    authentication_classes = ()
 
     def post(self, request, format='json'):
         serializer = CustomUserSerializer(data=request.data, context={'request': None})

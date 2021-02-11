@@ -53,21 +53,21 @@ return(
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav">
-                {/* <ul className="navbar-nav"> */}
-                {/* <ul className="navbar-nav"> */}
-                <li className="nav-item">
-                        <NavLink className="nav-link" to="/boluses">My Boluses</NavLink>
-                </li>
-                <li className="nav-item">
-                        <NavLink className="nav-link" to="/profile">Profile</NavLink>
-                </li>
-                <li className="nav-item">
-                        <NavLink className="nav-link" to="/login">Login</NavLink>
-                </li>
-                <li className="nav-item">
-                        <NavLink className="nav-link" to="/register">Register</NavLink>
-                </li>
-                {/* </ul> */}
+                    {/* <ul className="navbar-nav"> */}
+                    {/* <ul className="navbar-nav"> */}
+                    <li className="nav-item">
+                            <NavLink className="nav-link" to="/boluses">My Boluses</NavLink>
+                    </li>
+                    <li className="nav-item">
+                            <NavLink className="nav-link" to="/profile">Profile</NavLink>
+                    </li>
+                    <li className="nav-item">
+                            <NavLink className="nav-link" to="/login">Login</NavLink>
+                    </li>
+                    <li className="nav-item">
+                            <NavLink className="nav-link" to="/register">Register</NavLink>
+                    </li>
+                    {/* </ul> */}
                 </div>
             </div>
         </nav >
