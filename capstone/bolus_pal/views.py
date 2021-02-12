@@ -11,6 +11,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import MyTokenObtainPairSerializer, CustomUserSerializer, BolusSerializer, DaySerializer
 
@@ -38,11 +39,12 @@ class CustomUserCreate(APIView):
     Create a new user. It's called 'UserList' because normally we'd have a get
     method here too, for retrieving a list of all User objects.
     """
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
-    authentication_classes = ()
 
     def post(self, request, format='json'):
-        serializer = CustomUserSerializer(data=request.data, context={'request': None})
+        serializer = CustomUserSerializer(data=request.data)
+        # serializer = CustomUserSerializer(data=request.data, context={'request': None})
         if serializer.is_valid():
             user = serializer.save()
             if user:

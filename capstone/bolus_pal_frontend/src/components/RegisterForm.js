@@ -32,10 +32,6 @@ class RegisterForm extends Component {
     
 
     render() {
-        // if (this.state.password !== this.state.confirmation){
-        //     return (
-        //         <div id="winner">Passwords must match.</div>
-        //     )}
         return ( 
         <div className="register">
             <h2>Register</h2>
