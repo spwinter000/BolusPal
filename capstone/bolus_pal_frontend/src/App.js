@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+// import { browserHistory } from 'react-router';
 import { render } from 'react-dom';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect} from "react-router-dom";
 import NavBar from './components/NavBar';
 import BolusList from './components/BolusList';
 import Profile from './components/Profile';
@@ -13,37 +14,36 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            displayed_form: '',
-            logged_in: localStorage.getItem('access_token') ? true : false,
-            // logged_in: true,
-            username: '',
-            // data: [],
-            // loaded: false,
-            // placeholder: "Loading"
+            loggedIn: localStorage.getItem('access_token') ? true : false,
+            loggedInUsername: '',
+            // pathname: '',
+            // nextPathname: ''
+
         }
-        // this.handleLogin = this.handleLogin.bind(this);
+        this.getCurrentUser = this.getCurrentUser.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-        // this.getCookie = this.getCookie.bind(this);
+        // this.requireAuth = this.requireAuth.bind(this);
     }
 
-    componentDidMount() {
-        if (this.state.logged_in){
-            fetch('http://127.0.0.1:8000/bolus_pal/current_user/', {
-            headers: {
-                'Authorization': "JWT " + localStorage.getItem('access_token')
+    // componentDidMount() {
+    //     if (this.state.loggedIn){
+    //         fetch('http://127.0.0.1:8000/bolus_pal/current_user/', {
+    //         headers: {
+    //             'Authorization': "JWT " + localStorage.getItem('access_token')
 
-            }
-            })
-            .then(res => res.json())
-            .then(json => {
-              this.setState({ 
-                //   logged_in: true,
-                  username: json.username 
-                });
-                console.log(json);
-            });
-        }
-        }
+    //         }
+    //         })
+    //         .then(res => res.json())
+    //         .then(json => {
+    //           this.setState({ 
+    //             //   loggedIn: true,
+    //               username: json.username 
+    //             });
+    //             console.log(json);
+    //         });
+    //     }
+    //     }
 
         // get cookie for CSRF
         // getCookie(name) {
@@ -76,7 +76,7 @@ class App extends Component {
         //     .then(json => {
         //       localStorage.setItem('token', json.token);
         //       this.setState({
-        //         logged_in: true,
+        //         loggedIn: true,
         //         displayed_form: '',
         //         username: json.user.username
         //       });
@@ -99,7 +99,7 @@ class App extends Component {
         //     })
         //     .then(
         //         this.setState({
-        //             logged_in: true
+        //             loggedIn: true
         //             // displayed_form: ''
         //             // username: json.username
         //         })
@@ -121,62 +121,120 @@ class App extends Component {
         //     .then(json => {
         //         localStorage.setItem('access_token', json.access_token);
         //         this.setState({
-        //             logged_in: true,
+        //             loggedIn: true,
         //             displayed_form: '',
         //             username: json.username
         //         });
         //     });
         // }
+        
+        // handleLoginNav(event){
+        //     event.preventDefault();
+        //     this.setState({ loggedIn: true });
+        //     console.log('loggedIn')
+        // };
+        
+        
+        componentDidMount(){
+            if (this.state.loggedIn){
+                fetch('http://127.0.0.1:8000/bolus_pal/current_user/', {
+                headers: {
+                    'Authorization': "JWT " + localStorage.getItem('access_token')
+                }
+                })
+                .then(res => res.json())
+                .then(json => {
+                  this.setState({ 
+                    loggedInUsername: json.username
+                    });
+                });
+            }
+        }
 
+
+        // requireAuth(nextState, replace) {
+        //     if (this.state.loggedIn) {
+        //       replace({
+        //         pathname: '/login',
+        //         state: { nextPathname: nextState.location.pathname }
+        //       })
+        //     }
+        //   }
+        
+        //once user logs in, grab username to display in welcome message
+        getCurrentUser() {
+            if (this.state.loggedIn){
+                fetch('http://127.0.0.1:8000/bolus_pal/current_user/', {
+                headers: {
+                    'Authorization': "JWT " + localStorage.getItem('access_token')
+                    }
+                })
+                .then(res => res.json())
+                .then(json => {
+                  this.setState({ 
+                    loggedInUsername: json.username
+                    });
+                });
+                }
+            }
+        
+        handleLogin(event, data){
+            // const history = useHistory();
+            event.preventDefault();
+            axiosInstance.post('/token/obtain/', {
+                username: data.username,
+                password: data.password
+            }).then(result => {
+                axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
+                localStorage.setItem('access_token', result.data.access);
+                localStorage.setItem('refresh_token', result.data.refresh);
+                this.setState({ loggedIn: true}, function(){console.log(this.state.loggedIn)}), // set loggedIn to true to show logged in nav, username
+                this.getCurrentUser()
+                // history.push('boluses');
+                // browserHistory.push('/boluses');
+                // console.log(this.state.username)
+                // return <Redirect to="/boluses" />
+            },
+            console.log(localStorage)
+            
+            // ).then(
+                    // console.log(this.state.loggedIn)
+                ).catch(error => {
+                    throw error;
+                })
+                // .then(
+                //     window.location.reload()
+                // )
+        }
         
         handleLogout(){
             localStorage.removeItem('access_token');
-            this.setState({ logged_in: false, username: '' });
-            console.log('logged out')
+            this.setState({ loggedIn: false, loginUsername: '', loginPassword: '' }, function(){console.log(this.state.loggedIn)});
         };
-        // fetch("api/users")
-        //     .then(response => {
-        //     if (response.status > 400) {
-        //         return this.setState(() => {
-        //         return { placeholder: "Something went wrong!" };
-        //         });
-        //     }
-        //     return response.json();
-        //     })
-        //     .then(data => {
-        //     this.setState(() => {
-        //         return {
-        //         data,
-        //         loaded: true
-        //         };
-        //     });
-        //     });
-        // }
 
     render() {
         return (
             <div>
-            <NavBar 
-                logged_in={this.state.logged_in}
-                display_form={this.display_form}
-                handleLogout={this.handleLogout}
-            />
+                <NavBar 
+                    loggedIn={this.state.loggedIn}
+                    display_form={this.display_form}
+                    handleLogout={this.handleLogout}
+                    // handleLoginNav={this.handleLoginNav}
+                />
             <div className="container">
-                {this.state.logged_in ? <p className="welcome">Welcome, {this.state.username}</p> : <p className="welcome"></p>}
-                {/* <p className="welcome"></p> */}
-                {/* {this.state.data.map(function(person, i) {
-                    return (
-                        <p key={i} className="welcome">
-                        Welcome back, {person.username}
-                    </p>
-                    );
-                })} */}
+                {this.state.loggedIn ? <p className="welcome">Welcome, {this.state.loggedInUsername}</p> : <p className="welcome"></p>}
             </div>
                 <Switch>
-                    {/* <Route path="/login" render={(props) => <LoginForm handle_login={this.handle_login} />}/> */}
-                    <Route path="/login" component={() => <LoginForm handleLogin={this.handleLogin} logged_in={this.state.logged_in}/>}/>
                     <Route path="/register" component={RegisterForm}></Route>
                     <Route path="/boluses" component={BolusList}></Route>
+                    <Route path="/login" 
+                        component={() => 
+                            <LoginForm 
+                                loggedIn = {this.state.loggedIn}
+                                handleLogin={this.handleLogin}
+                            />}
+                        // render={() => (this.state.loggedIn ? (<Redirect to="/boluses"/>) : (<LoginForm/>))}
+                    />
                     <Route path="/profile" component={Profile}></Route>
                 </Switch>
             </div>

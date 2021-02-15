@@ -34,9 +34,9 @@ const UserInfo = ({data}) => {
                   return (
                       <p key={i}>
                   - User: {user.username}<br/> 
-                  - Low threshold: {user.high_threshold} <br/>
-                  - High threshold: {user.low_threshold} <br/>
-                  - Carbs per unit: {user.carbs_per_unit} <br/>
+                  - Low threshold: {user.high_threshold}mg/dl <br/>
+                  - High threshold: {user.low_threshold}mg/dl <br/>
+                  - Carbs per unit: {user.carbs_per_unit}g <br/>
                   </p>
                   );
               })}
