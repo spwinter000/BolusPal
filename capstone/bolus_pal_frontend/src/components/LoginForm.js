@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CSRFToken from './csrfToken';
-import { Redirect, browserHistory } from 'react-router';
-
+import { Redirect } from 'react-router';
 
 class LoginForm extends Component {
     constructor(props){
@@ -18,9 +17,8 @@ class LoginForm extends Component {
         this.setState({[event.target.name]: event.target.value})
     }
 
+    // send user to their boluses page after they log in, else render login form
     render() {
-        // let Router = require('react-router');
-        // browserHistory.push('/boluses');
         if (this.props.loggedIn === true) { 
             return (<Redirect to="/boluses" />);
          } else { 
