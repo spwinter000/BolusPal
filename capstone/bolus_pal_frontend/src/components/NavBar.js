@@ -35,10 +35,10 @@ const NavBar = ({loggedIn, handleLogout}) => {
             <div className="collapse navbar-collapse" id="navbarNav">
                 <div className="navbar-nav">
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/login">Login</NavLink>
+                        <NavLink className="nav-link" to="/login">Log In</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link" to="/register">Register</NavLink>
+                        <NavLink className="nav-link" to="/register">Sign Up</NavLink>
                     </li>
                 </div>
             </div>
@@ -77,7 +77,6 @@ const NavBar = ({loggedIn, handleLogout}) => {
 
 NavBar.propTypes = {
     loggedIn: PropTypes.bool.isRequired,
-    // display_form: PropTypes.func.isRequired,
     handleLogout: PropTypes.func.isRequired
 };
 

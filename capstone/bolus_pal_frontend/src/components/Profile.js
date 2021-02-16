@@ -9,9 +9,9 @@ class Profile extends Component {
             // // test: 'hiiiiiiisfsf',
             loaded: false,
             placeholder: "Loading",
-            highThreshold: '',
-            lowThreshold: '',
-            carbsPerUnit: ''
+            // highThreshold: '',
+            // lowThreshold: '',
+            // carbsPerUnit: ''
         }
     }
 

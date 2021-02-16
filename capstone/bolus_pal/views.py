@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+import datetime
 
 from .models import CustomUser, Bolus, Day
 
@@ -93,7 +94,7 @@ class BolusViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows boluses to be viewed or edited.
     """
-    queryset = Bolus.objects.all()
+    queryset = Bolus.objects.all().order_by('-timestamp')
     serializer_class = BolusSerializer
     permission_classes = [permissions.IsAuthenticated]
 

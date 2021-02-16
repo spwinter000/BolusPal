@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CSRFToken from './csrfToken';
 import { Redirect } from 'react-router';
 
+
 class LoginForm extends Component {
     constructor(props){
         super(props);
@@ -24,7 +25,7 @@ class LoginForm extends Component {
          } else { 
             return( 
                 <div className="login">
-                    <h2>Login</h2>
+                    <h2>Log In</h2>
                     <form onSubmit={e => this.props.handleLogin(e, this.state)} method="post">
                     <CSRFToken />
                         <div className="form-group">

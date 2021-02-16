@@ -13,7 +13,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'username', 'password', 'high_threshold', 'low_threshold', 'carbs_per_unit']
+        fields = ['id', 'email', 'username', 'password', 'high_threshold', 'low_threshold', 'carbs_per_unit']
         extra_kwargs = {'password': {'write_only': True}}
 
     # determines how object being serialized gets saved to the DB
@@ -53,7 +53,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class BolusSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Bolus
-        fields = ['user', 'carb_total', 'blood_sugar', 'bolus_total']
+        fields = ['user', 'carb_total', 'blood_sugar', 'bolus_total', 'timestamp']
 
 class DaySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
