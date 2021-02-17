@@ -2,6 +2,11 @@
     float: right;
 }
 
+.title, .new-bolus{
+    margin-left: 20px;
+}
+
+/* SETTINGS PAGE */
 .settings-div-outer{
     text-align: center;
     width: 200px;
@@ -14,17 +19,43 @@
     width: 200px;
 }
 
- /* LOGIN/REGISTER */
- .login{
+/* BOLUSES PAGE */
+.bolus-outer{
+    display: inline-block;
+}
+
+.bolus-inner{
+    /* display: inline-block; */
+    border: 1px solid rgb(235, 229, 229);
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
+    margin: 0 auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    width: 215px;
+    padding: 5px;
+}
+
+.bolus-inner #label{
+    font-weight: 500;
+}
+
+#label, #value{
+    display: inline;
+}
+
+/* LOGIN/REGISTER */
+.login{
     position: absolute;
     margin-top: 170px;
     /* top: 30%; */
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
- }
+}
 
- .register{
+.register{
     position: absolute;
     margin-top: 170px;
     /* top: 30%; */

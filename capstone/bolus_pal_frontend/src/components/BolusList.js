@@ -6,39 +6,55 @@ class BolusList extends Component {
         this.state = {
             data: [],
             loaded: false,
-            placeholder: "Loading"
+            placeholder: "Loading",
+            handleNewBolus: false
         }
-        this.getUser = this.getUser.bind(this);
+        // this.getUser = this.getUser.bind(this);
         this.getBoluses = this.getBoluses.bind(this);
-    }
-
-    handleNewBolus(event){
-        event.preventDefault();
+        this.convertISODate = this.convertISODate.bind(this);
+        this._isMounted = false;
     }
 
     // get the user from user model that is associated with the bolus user
-    getUser() {
-        fetch(`api/users/${this.props.loggedInID}`)
-        .then(response => {
-            if (response.status > 400) {
-                return this.setState(() => {
-                    return { placeholder: "Something went wrong!" };
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            this.setState(() => {
-                return {
-                    data,
-                    loaded: true
-                };
-            });
-            console.log(data)
-        });
+    // getUser() {
+    //     fetch(`api/users/${this.props.loggedInID}`)
+    //     .then(response => {
+    //         if (response.status > 400) {
+    //             return this.setState(() => {
+    //                 return { placeholder: "Something went wrong!" };
+    //             });
+    //         }
+    //         return response.json();
+    //     })
+    //     .then(data => {
+    //         this.setState(() => {
+    //             return {
+    //                 data,
+    //                 loaded: true
+    //             };
+    //         });
+    //         console.log(data)
+    //     });
+    // }
+
+    
+    handleNewBolus(){
+        this._isMounted = true;
+        // event.preventDefault();
+        // render new form submit new bolus to db
+        return (
+            <div>
+                <form className="new-bolus-form">
+                    <label id="label">Carbohydrate total:</label> <input id="value"></input>g<br/>
+                    <label id="label">Blood sugar:</label> <input id="value"></input>mg/dl<br/>
+                    <label id="label">Bolus Total:</label> <input id="value"></input>units<br/>
+                </form>
+            </div>
+        )
     }
 
     getBoluses(){
+        this._isMounted = true;
         fetch(`api/boluses/`)
         .then(response => {
             if (response.status > 400) {
@@ -47,43 +63,56 @@ class BolusList extends Component {
             return response.json();
         })
         .then(data => {
+            // console.log(data)
             let newArr = [];
             for (let bolus of data){
-                if (bolus.user === `http://127.0.0.1:8000/api/users/${this.props.loggedInID}/`){
+                if (bolus.user === this.props.loggedInID){
                     newArr.push(bolus)
                 }
             }
-            this.setState({
-                data: newArr,
-                loaded: true
-            },
-            console.log(newArr)
-            );
+            if(this._isMounted) {
+                this.setState({
+                    data: newArr,
+                    loaded: true
+                }
+            // console.log(newArr)
+            )};
         });
     }
 
-    
+    // convert python ISO datetime to readable string
+    convertISODate(UNIXstring){
+        // let date1 = new Date(UNIXstring).toLocaleDateString();
+        let date = new Date(UNIXstring).toLocaleDateString([], {hour: '2-digit', minute:'2-digit'});
+        return date;
+    }
+
     componentDidMount(){
-        // this.getUser();
+        this._isMounted = true;
         this.getBoluses();
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+     }
     
     render() {
         return (
             <div>
-                <h2>Your Boluses</h2>
-                <button onClick={this.handleNewBolus}>Add New Bolus</button>
+                <h2 className="title">Your Boluses</h2>
+                <button className="new-bolus" onClick={() => this.setState({handleNewBolus: true})}>Add New Bolus</button>
             <ul>
-            {this.state.data.map(function(item, i) {
-                return (
-                <div key={i} className="bolus">
-                - Carbohydrate total: {item.carb_total} <br/>
-                - Blood sugar: {item.blood_sugar}mg/dl <br/>
-                - Bolus Total: {item.bolus_total}<br/>
-                - Timestamp: {item.timestamp}<br/>
+            {this.state.data.map((item, i) => (
+                <div className="bolus-outer" key={i}>
+                    <div className="bolus-inner">
+                        <p id="label">Carbohydrate total:</p> <p id="value">{item.carb_total}g</p> <br/>
+                        <p id="label">Blood sugar:</p> <p id="value">{item.blood_sugar}mg/dl</p> <br/>
+                        <p id="label">Bolus Total:</p> <p id="value">{item.bolus_total} units</p><br/>
+                        {this.convertISODate.call(this, item.timestamp)}<br/>
+                    </div>
                 </div>
-                );
-            })}
+                )
+            )}
             </ul>
             </div>
         );

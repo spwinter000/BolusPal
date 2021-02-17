@@ -94,6 +94,7 @@ class BolusViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows boluses to be viewed or edited.
     """
+    timestamp = datetime
     queryset = Bolus.objects.all().order_by('-timestamp')
     serializer_class = BolusSerializer
     permission_classes = [permissions.IsAuthenticated]

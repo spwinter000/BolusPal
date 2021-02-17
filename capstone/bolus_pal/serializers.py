@@ -50,10 +50,21 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 #         model = Carbs_per_unit
 #         fields = ['user', 'carbs_per_unit']
 
-class BolusSerializer(serializers.HyperlinkedModelSerializer):
+# changed from HyperlinkedModelSerializer
+class BolusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bolus
         fields = ['user', 'carb_total', 'blood_sugar', 'bolus_total', 'timestamp']
+
+        # def to_representation(self, instance):
+        #     formatted_datetime_field = instance.timestamp.timestamp()
+
+        #     return {'user': instance.user, 
+        #             'carb_total': instance.carb_total,
+        #             'blood_sugar': instance.blood_sugar,
+        #             'bolus_total': instance.bolus_total,
+        #             'timestamp': instance.formatted_datetime_field
+        #     }
 
 class DaySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
