@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 import datetime
 
-from .models import CustomUser, Bolus, Day
+from .models import CustomUser, Bolus, Food, Day
 
 # rest framework and serialize imports
 from rest_framework import viewsets, permissions, status
@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import MyTokenObtainPairSerializer, CustomUserSerializer, BolusSerializer, DaySerializer
+from .serializers import MyTokenObtainPairSerializer, CustomUserSerializer, BolusSerializer, FoodSerializer, DaySerializer
 
 # function to be used anytime the user revisits the site, reloads the page, or does anything else that causes React to forget its state. 
 @api_view(['GET'])
@@ -94,9 +94,18 @@ class BolusViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows boluses to be viewed or edited.
     """
-    timestamp = datetime
+    # timestamp = datetime
     queryset = Bolus.objects.all().order_by('-timestamp')
     serializer_class = BolusSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class FoodViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows foods to be viewed or edited.
+    """
+    # timestamp = datetime
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class DayViewSet(viewsets.ModelViewSet):

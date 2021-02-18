@@ -62,7 +62,7 @@ class Profile extends Component {
     render() {
         return ( 
             <div>
-                <h2>Your Settings</h2>
+                <h2 className="title">Your Settings</h2>
                 <UserInfo data={this.state.data} />
             </div>
          );

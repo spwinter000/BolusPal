@@ -33,5 +33,11 @@ class Bolus(models.Model):
     bolus_total = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
+class Food(models.Model):
+    bolus = models.ForeignKey(Bolus, on_delete=models.CASCADE, default=1)
+    name = models.CharField(blank=True, max_length=40)
+    carbs = models.IntegerField(default=0)
+    servings = models.IntegerField(default=0)
+
 class Day(models.Model):
     bolus = models.ForeignKey(Bolus, on_delete=models.CASCADE)

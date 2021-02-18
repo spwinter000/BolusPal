@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { NavLink, Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const NavBar = ({loggedIn, handleLogout}) => {
+
     // if user is logged in, show a certain navbar, else show another with login and register
     const loggedInNav = (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">

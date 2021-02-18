@@ -34,6 +34,7 @@ router.register(r'users', views.CustomUserViewSet) # all users
 # router.register(r'high_thresholds', views.HighThresholdViewSet)
 # router.register(r'low_thresholds', views.LowThresholdViewSet)
 # router.register(r'carbs_per_units', views.CarbsPerUnitViewSet)
+router.register(r'foods', views.FoodViewSet)
 router.register(r'boluses', views.BolusViewSet)
 router.register(r'days', views.DayViewSet)
 

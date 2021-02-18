@@ -1,5 +1,5 @@
 # from django.contrib.auth.models import User, High_threshold, Low_threshold, Carbs_per_unit, Bolss, Day
-from .models import CustomUser, Bolus, Day
+from .models import CustomUser, Bolus, Food, Day
 from rest_framework_jwt.settings import api_settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -54,17 +54,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class BolusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bolus
-        fields = ['user', 'carb_total', 'blood_sugar', 'bolus_total', 'timestamp']
+        fields = ['id', 'user', 'carb_total', 'blood_sugar', 'bolus_total', 'timestamp']
 
-        # def to_representation(self, instance):
-        #     formatted_datetime_field = instance.timestamp.timestamp()
-
-        #     return {'user': instance.user, 
-        #             'carb_total': instance.carb_total,
-        #             'blood_sugar': instance.blood_sugar,
-        #             'bolus_total': instance.bolus_total,
-        #             'timestamp': instance.formatted_datetime_field
-        #     }
+class FoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = ['bolus', 'name', 'carbs', 'servings']
 
 class DaySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

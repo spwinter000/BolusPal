@@ -2,8 +2,19 @@
     float: right;
 }
 
-.title, .new-bolus{
+.title, #new-bolus{
     margin-left: 20px;
+}
+
+
+.body{
+    margin-left: 50px;
+}
+
+hr{
+    /* width:90%; */
+    /* margin:0 auto; */
+
 }
 
 /* SETTINGS PAGE */
@@ -20,6 +31,55 @@
 }
 
 /* BOLUSES PAGE */
+
+/* New Bolus */
+.new-bolus-form{
+    border: 1px solid rgb(235, 229, 229);
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
+    margin-left: 10px;
+    margin-top: 10px;
+    width: 500px;
+}
+
+.new-bolus-form-inner{
+    margin: 10px 10px 10px 10px;
+}
+
+#new-bolus-button-x{
+    /* height: 15px;
+    width: 15px; */
+    float: right;
+}
+
+#new-food{
+    color: rgb(116, 116, 255);
+    text-decoration: underline;
+}
+
+
+#new-food-button{
+    width: 76px;
+    margin-left: 5px;
+}
+
+#label {
+    font-weight: 500;
+}
+
+#label, #input-value {
+    display: inline-block;
+}
+
+#input-value{
+    width: 100px;
+}
+
+#input-value-2:nth-child(n+2){
+    margin-left: 5px;
+}
+
+/* bolus post */
 .bolus-outer{
     display: inline-block;
 }
@@ -43,6 +103,10 @@
 
 #label, #value{
     display: inline;
+}
+
+#timestamp {
+    opacity: .8;
 }
 
 /* LOGIN/REGISTER */

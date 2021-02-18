@@ -42,7 +42,7 @@ class SignupForm extends Component {
                     <input className="btn btn-primary" type="submit" value="Register"/>
                 </form>
                 {/* Already have an account? <a href="{% url 'login' %}">Log In here.</a> */}
-            <div className="success">{this.props.success ? this.props.success : null}</div>
+                <div className="success">{this.props.success ? this.props.success : null}</div>
             </div>
         </div>
          );
