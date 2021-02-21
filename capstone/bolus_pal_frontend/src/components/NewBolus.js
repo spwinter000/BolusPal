@@ -5,13 +5,12 @@ class NewBolus extends Component {
     constructor(props){
         super(props);
         this.state = {
-            // handleNewBolus: true,
             addFood: false,
+            foods: [],
             bolusTotal: 0,
             carbTotal: 0   
         }
         // this.handleChange = this.handleChange.bind(this);
-        this.handleX = this.handleX.bind(this);
     }
 
     // handleNewBolus(){
@@ -28,7 +27,7 @@ class NewBolus extends Component {
     //                     </div>
     //                     <div className="form-group">
     //                         <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => this.setState({addFood: true})}>Add Food +</a><br/>
-    //                         {this.state.addFood ? this.addFood() : null}
+    //                         {this.state.addFood ? this.addFoodModal() : null}
     //                     </div>
     //                     <div className="form-group">
     //                         <label id="label">Carbohydrate total:</label> {this.state.carbTotal} g<br/>
@@ -42,18 +41,14 @@ class NewBolus extends Component {
     //         </div>
     //     )
     // }
-    handleX(event, addFood){
-        event.preventDefault();
-        this.setState({addFood: false});
-    }
 
-    addFood(){
-        //adding food to food list in new bolus form
+    addFoodModal(){
+        //open add food modal
         return(
             <table>
                 <thead>
                     <tr>
-                        <th>Food Item</th>
+                        <th>Food Name</th>
                         <th>Carbohydrates</th>
                         <th>Servings</th>
                     </tr>
@@ -70,18 +65,24 @@ class NewBolus extends Component {
         )
     }
 
+    //adding food to food list in new bolus form
+    addFoodToForm(){
+        //take food info thats typed in and append it to the form under the food table headers
+        //add onclick to 'Add' button in addFoodModal
+    }
+
     render(){
     return (
         <div>
             <form className="new-bolus-form">
                 <div className="new-bolus-form-inner">
-                    <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleX(e)}>X</button>
+                    <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</button>
                     <div className="form-group">
                         <label id="label">Blood sugar:</label> <input className="form-control" autoFocus type="number" id="input-value"></input> mg/dl<br/>
                     </div>
                     <div className="form-group">
-                        <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => this.setState({addFood: true})}>Add Food +</a><br/>
-                        {this.state.addFood ? this.addFood() : null}
+                        <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => this.setState({addFood: true})}>Add Food (+) </a><br/>
+                        {this.state.addFood ? this.addFoodModal() : null}
                     </div>
                     <div className="form-group">
                         <label id="label">Carbohydrate total:</label> {this.state.carbTotal} g<br/>

@@ -6,17 +6,23 @@ class BolusList extends Component {
         super(props);
         this.state = {
             data: [],
+            foods: [],
             loaded: false,
             placeholder: "Loading",
             handleNewBolus: false,
-            addFood: false,
-            bolusTotal: 0,
-            carbTotal: 0
+            shown: {},
+            iconClass: "fas fa-caret-right"
+            // tableCollapsed: true
+            // addFood: false,
+            // bolusTotal: 0,
+            // carbTotal: 0
         }
         // this.getUser = this.getUser.bind(this);
         this.getBoluses = this.getBoluses.bind(this);
+        this.getFoods = this.getFoods.bind(this);
         this.convertISODate = this.convertISODate.bind(this);
         this.handleExitNewBolusForm = this.handleExitNewBolusForm.bind(this);
+        this.renderFoodTable = this.renderFoodTable.bind(this);
         this._isMounted = false;
     }
 
@@ -102,7 +108,7 @@ class BolusList extends Component {
     // retrieve list of boluses from api
     getBoluses(){
         this._isMounted = true;
-        fetch(`api/boluses/`)
+        fetch('api/boluses/')
         .then(response => {
             if (response.status > 400) {
                 return this.setState({ placeholder: "Something went wrong!" });
@@ -125,7 +131,60 @@ class BolusList extends Component {
                 )};
             });
         }
-        
+
+    getFoods(){
+        this._isMounted = true;
+        fetch('api/foods/')
+        .then(response => {
+            if (response.status > 400) {
+                return this.setState({ placeholder: "Something went wrong!" });
+            }
+            return response.json();
+        })
+        .then(data => {
+            // console.log(data)
+            let newArr = [];
+            for (let food of data){
+                // if (f === this.props.loggedInID){
+                newArr.push(food)
+                // }
+            }
+            if(this._isMounted) {
+                this.setState({
+                    foods: newArr,
+                    loaded: true
+                }
+                )};
+            });
+        }
+
+    // take foods pulled from api and put them into relative bolus arrays, also set collapsed food table = true
+    getFoodsIntoBolus(){
+        for(let bolus of this.state.data){
+            bolus.foods = [];
+            bolus.collapsed = true;
+        }
+        for(let i = 0; i < this.state.foods.length; i++){
+            for (let j = 0; j < this.state.data.length; j++){
+                if (this.state.foods[i].bolus === this.state.data[j].id){
+                    this.state.data[j].foods.push(this.state.foods[i])
+                }
+            }
+        }
+    }
+
+    renderFoodTable(bolus_id){
+        this.setState({
+            shown: {
+                ...this.state.shown,
+                [bolus_id]: !this.state.shown[bolus_id],
+            }
+        });
+    }
+
+    renderFoodIcon(bolus_id){
+        return this.state.shown[bolus_id] ? "fas fa-caret-down" : "fas fa-caret-right";
+    }
         
     // convert python ISO datetime to readable string
     convertISODate(UNIXstring){
@@ -143,6 +202,7 @@ class BolusList extends Component {
     componentDidMount(){
         this._isMounted = true;
         this.getBoluses();
+        this.getFoods();
     }
 
     componentWillUnmount() {
@@ -150,7 +210,7 @@ class BolusList extends Component {
     }
     
     render() {
-        console.log(this.state.data)
+        this.getFoodsIntoBolus();
         return (
             <div className="">
                 <h2 className="title">Your Boluses</h2>
@@ -162,10 +222,38 @@ class BolusList extends Component {
             {this.state.data.map((item, i) => (
                 <div className="bolus-outer" key={i}>
                     <div className="bolus-inner">
-                        <p id="label">Carbohydrate total:</p> <p id="value">{item.carb_total}g</p> <br/>
-                        <p id="label">Blood sugar:</p> <p id="value">{item.blood_sugar}mg/dl</p> <br/>
-                        <p id="label">Bolus Total:</p> <p id="value">{item.bolus_total} units</p><br/>
+                        {/* <h3>Lunch</h3> */}
                         <p id="timestamp">{this.convertISODate.call(this, item.timestamp)}</p>
+                        <p id="label">Blood sugar:</p> <p id="value">{item.blood_sugar}mg/dl</p> <br/>
+                        {/* {item.collapsed.toString()} */}
+                        <p id="label">Foods:</p> <i className={this.renderFoodIcon(item.id)} onClick={this.renderFoodTable.bind(this, item.id)}></i><br/>
+                        {/* {console.log(item.collapsed)} */}
+                        {this.state.shown[item.id] ?
+                        item.foods.length > 0 ? 
+                        <div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Food Name</th>
+                                        <th>Carbohydrates</th>
+                                        <th>Servings</th>
+                                    </tr>
+                                </thead>
+                            {item.foods.map((food, i) => (
+                                <tbody key={i}>
+                                    <tr>
+                                        <td>{food.name}</td>
+                                        <td>{food.carbs}</td>
+                                        <td>{food.servings}</td>
+                                    </tr>
+                                </tbody>
+                            ))} 
+                            </table> 
+                        </div>
+                        : <div><p id="value">There are no foods for this bolus.</p> <br/></div>
+                        : null}
+                        <p id="label">Carbohydrate total:</p> <p id="value">{item.carb_total}g</p> <br/>
+                        <p id="label">Bolus Total:</p> <p id="value">{item.bolus_total} units</p><br/>
                     </div>
                 </div>
                 )

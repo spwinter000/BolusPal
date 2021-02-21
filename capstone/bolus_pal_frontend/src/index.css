@@ -82,6 +82,9 @@ hr{
 /* bolus post */
 .bolus-outer{
     display: inline-block;
+    width: 300px;
+    margin: 5px 5px 5px 5px;
+    
 }
 
 .bolus-inner{
@@ -93,8 +96,8 @@ hr{
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
-    width: 215px;
-    padding: 5px;
+    width: 300px;
+    padding: 10px;
 }
 
 .bolus-inner #label{
