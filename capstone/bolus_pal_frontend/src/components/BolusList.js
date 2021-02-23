@@ -102,6 +102,7 @@ class BolusList extends Component {
     // }
 
     // submit new bolus to db, render on page
+    
     submitNewBolus(){
     }
 
@@ -216,7 +217,6 @@ class BolusList extends Component {
                 <h2 className="title">Your Boluses</h2>
                 <button className="btn btn-primary" id="new-bolus" onClick={() => this.setState({handleNewBolus: true})}>Add New Bolus</button>
                 <hr></hr>
-                {/* {this.state.handleNewBolus ? this.handleNewBolus() : null} */}
                 {this.state.handleNewBolus ? <NewBolus handleExitNewBolusForm={this.handleExitNewBolusForm}/> : null}
             <ul>
             {this.state.data.map((item, i) => (
@@ -225,9 +225,7 @@ class BolusList extends Component {
                         {/* <h3>Lunch</h3> */}
                         <p id="timestamp">{this.convertISODate.call(this, item.timestamp)}</p>
                         <p id="label">Blood sugar:</p> <p id="value">{item.blood_sugar}mg/dl</p> <br/>
-                        {/* {item.collapsed.toString()} */}
                         <p id="label">Foods:</p> <i className={this.renderFoodIcon(item.id)} onClick={this.renderFoodTable.bind(this, item.id)}></i><br/>
-                        {/* {console.log(item.collapsed)} */}
                         {this.state.shown[item.id] ?
                         item.foods.length > 0 ? 
                         <div>
@@ -243,7 +241,7 @@ class BolusList extends Component {
                                 <tbody key={i}>
                                     <tr>
                                         <td>{food.name}</td>
-                                        <td>{food.carbs}</td>
+                                        <td>{food.carbs}g</td>
                                         <td>{food.servings}</td>
                                     </tr>
                                 </tbody>
