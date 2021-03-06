@@ -11,11 +11,6 @@
     margin-left: 50px;
 }
 
-hr{
-    /* width:90%; */
-    /* margin:0 auto; */
-
-}
 
 /* SETTINGS PAGE */
 .settings-div-outer{
@@ -53,13 +48,8 @@ hr{
 }
 
 #new-food{
-    color: rgb(116, 116, 255);
+    color: rgb(0, 0, 255);
     text-decoration: underline;
-}
-
-#new-food-button{
-    width: 76px;
-    margin-left: 5px;
 }
 
 #label {
@@ -78,8 +68,18 @@ hr{
     margin-left: 5px;
 }
 
+/* try to get this removed from under delete button */
 .foodAdded{
     border-bottom: 1px solid rgb(235, 229, 229);;
+}
+
+#delete-btn {
+    display: block;
+    margin: auto;
+    height: 30px;
+    width: 30px;  
+    border-radius: 50%;
+    text-align: center;
 }
 
 /* bolus post */

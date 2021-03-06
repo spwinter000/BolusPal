@@ -6,11 +6,10 @@ class NewBolus extends Component {
         super(props);
         this.state = {
             addFood: false,
-            // foods: [],
+            addFoodLabel: 'Add Food (+)',
             foodName: '',
             carbs: 0,
             servings: 0,
-            // foodAdded: false,
             foodAdded: [],
             bolusTotal: 0,
             carbTotal: 0   
@@ -21,41 +20,11 @@ class NewBolus extends Component {
 
     // go into state and find name from target element and set that property's value to target element value
     handleChange(event){
-        // if(event.target.value != ""){
-            this.setState({[event.target.name]: event.target.value})
-        // }
+        this.setState({[event.target.name]: event.target.value})
     }
 
-    // handleNewBolus(){
-    //     this._isMounted = true;
-    //     // event.preventDefault();
-    //     // render new bolus form
-    //     return (
-    //         <div>
-    //             <form className="new-bolus-form">
-    //                 <div className="new-bolus-form-inner">
-    //                     <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={() => this.setState({handleNewBolus: false, addFood: false})}>X</button>
-    //                     <div className="form-group">
-    //                         <label id="label">Blood sugar:</label> <input className="form-control" autoFocus type="number" id="input-value"></input> mg/dl<br/>
-    //                     </div>
-    //                     <div className="form-group">
-    //                         <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => this.setState({addFood: true})}>Add Food +</a><br/>
-    //                         {this.state.addFood ? this.addFoodModal() : null}
-    //                     </div>
-    //                     <div className="form-group">
-    //                         <label id="label">Carbohydrate total:</label> {this.state.carbTotal} g<br/>
-    //                     </div>
-    //                     <div className="form-group">
-    //                         <label id="label">Bolus Total:</label> {this.state.bolusTotal} units<br/>
-    //                     </div>
-    //                     <input className="btn btn-primary" type="submit" value="Submit"/>
-    //                 </div>
-    //             </form>
-    //         </div>
-    //     )
-    // }
-
-    addFoodModal(){
+    renderAddFoodModal(){
+        // this.renderAddFoodLabel()
         //open add food modal
         return (
             <table>
@@ -77,9 +46,9 @@ class NewBolus extends Component {
                         {this.state.foodAdded.map((item, i) => (
                             <tr className="foodAdded" key={i}>
                                 <td>{item.foodName}</td>
-                                <td>{item.carbs}</td>
+                                <td>{item.carbs}g</td>
                                 <td>{item.servings}</td>
-                                <td><button className="btn btn-danger" id="new-food-button" onClick={e => this.deleteFoodFromForm(e, i)}>Delete</button></td>
+                                <td><button className="btn btn-danger btn-sm" id="delete-btn" onClick={e => this.deleteFoodFromForm(e, i)}>x</button></td>
                             </tr>
                         ))}
                 </tbody>
@@ -87,17 +56,23 @@ class NewBolus extends Component {
         )
     }
 
-    //adding food to food list in new bolus form
+    renderAddFoodLabel(){
+        if (this.state.addFood === true)
+            this.setState({
+                addFoodLabel: 'Add Food (+)'
+            })
+        else{
+            this.setState({
+                addFoodLabel: 'Add Food (-)'
+            })
+        }
+    }
+
+    //adding foods to food list in new bolus form
     addFoodToForm(event){
         event.preventDefault();
-        // console.log(this.state.foodAdded)
-
-        console.log(this.state.foodName)
-        console.log(this.state.carbs)
-        console.log(this.state.servings)
-
+        // add new food to state, and clear input values
         this.setState({
-            // foodAdded: true,
             foodAdded: [
                 ...this.state.foodAdded,
                 {
@@ -106,93 +81,86 @@ class NewBolus extends Component {
                     "servings":  parseFloat(this.state.servings)
                 }
             ],
-            // foodName: '',
-            // carbs: '',
-            // servings: '',
-        }, () => console.log(this.state.foodAdded));
+            foodName: '',
+            carbs: 0,
+            servings: 0
+        });
 
+        // add up carbs of foodAdded array to display as carb total
+        let foodsArr = [...this.state.foodAdded];
+        let carbTotal = this.state.carbTotal;
 
-        // console.log(this.state.foodName)
-        // console.log(this.state.carbs)
-        // console.log(this.state.servings)
-
-        // carbCount
-        // let foodsArr = [...this.state.foodAdded];
-        // let carbTotal = this.state.carbTotal;
-        // carbTotal = this.state.carbs * this.state.servings;
-        // // for (let i = 0; i < foodsArr.length; i++){
-        // //     carbTotal += foodsArr[i].carbs;
-        //     // console.log(carbTotal);
-        //     // let carbTotal = item.carbs++;
-        // this.setState({
-        //     carbTotal: carbTotal
-        // })
-        // }
-
-
-        // return (
-        //     <table>
-        //         <tbody>
-        //             <tr>
-        //                 <td>{this.state.foodName}</td>
-        //                 <td>{this.state.carbs}</td>
-        //                 <td>{this.state.servings}</td>
-        //                 {/* <td><button className="btn btn-primary" id="new-food-button" onSubmit={this.addFoodToForm}>Add</button></td> */}
-        //             </tr>
-        //         </tbody>
-        //     </table>
-        // )
-        //take food info thats typed in and append it to the form under the food table headers
-        //add onclick to 'Add' button in addFoodModal
+        carbTotal = this.state.carbs * this.state.servings;
+        for (let i = 0; i < foodsArr.length; i++){
+            carbTotal += (foodsArr[i].carbs * foodsArr[i].servings);
+        }
+        this.setState({
+            carbTotal: carbTotal
+        })
     }
+
+    // countCarbs(){
+    //     let foodsArr = [...this.state.foodAdded];
+    //     let carbTotal = this.state.carbTotal;
+
+    //     carbTotal = this.state.carbs * this.state.servings;
+    //     for (let i = 0; i < foodsArr.length; i++){
+    //         carbTotal += (foodsArr[i].carbs * foodsArr[i].servings);
+    //         // console.log(carbTotal);
+    //     }
+    //     this.setState({
+    //         carbTotal: carbTotal
+    //     })
+
+    //     // console.log(foodsArr)
+    // }
 
     // remove food from list
     deleteFoodFromForm(event, index){
         event.preventDefault();
-        // console.log(index)
 
         let foodArr = [...this.state.foodAdded];
-
+        let carbTotal = this.state.carbTotal;
+        
         for (let i = 0; i < foodArr.length; i++){
             const indexOfFood = foodArr.indexOf(foodArr[i]);
             if (indexOfFood === index){
+                const carbsToSubtract = (foodArr[index].carbs * foodArr[index].servings);
+                carbTotal = carbTotal - carbsToSubtract;
                 foodArr.splice(indexOfFood, 1);
             }
         }
         
         this.setState({
-            foodAdded: foodArr
+            foodAdded: foodArr,
+            carbTotal: carbTotal
         });
-
     }
 
     render(){
-    return (
-        <div>
-            <form className="new-bolus-form">
-                <div className="new-bolus-form-inner">
-                    <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</button>
-                    <div className="form-group">
-                        <label id="label">Blood sugar:</label> <input className="form-control" autoFocus type="number" id="input-value"></input> mg/dl<br/>
+        return (
+            <div>
+                <form className="new-bolus-form">
+                    <div className="new-bolus-form-inner">
+                        <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</button>
+                        <div className="form-group">
+                            <label id="label">Blood sugar:</label> <input className="form-control" autoFocus type="number" id="input-value" required></input> mg/dl<br/>
+                        </div>
+                        <div className="form-group">
+                            <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => { this.setState({addFood: !this.state.addFood}); this.renderAddFoodLabel(); }}>{this.state.addFoodLabel}</a><br/>
+                            {this.state.addFood ? this.renderAddFoodModal() : null}
+                        </div>
+                        <div className="form-group">
+                            <label id="label">Carbohydrate total:</label> {this.state.carbTotal}g<br/>
+                        </div>
+                        <div className="form-group">
+                            <label id="label">Bolus Total:</label> {this.state.bolusTotal} units<br/>
+                        </div>
+                        <input className="btn btn-primary" type="submit" value="Submit"/>
                     </div>
-                    <div className="form-group">
-                        <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => this.setState({addFood: true})}>Add Food (+) </a><br/>
-                        {this.state.addFood ? this.addFoodModal() : null}
-
-                        {/* {this.state.foodAdded ?this.addFoodToForm() : null} */}
-                    </div>
-                    <div className="form-group">
-                        <label id="label">Carbohydrate total:</label> {this.state.carbTotal} g<br/>
-                    </div>
-                    <div className="form-group">
-                        <label id="label">Bolus Total:</label> {this.state.bolusTotal} units<br/>
-                    </div>
-                    <input className="btn btn-primary" type="submit" value="Submit"/>
-                </div>
-            </form>
-        </div>
-     );
-    
+                </form>
+            </div>
+        );
     }
 }
  

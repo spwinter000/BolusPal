@@ -20,7 +20,7 @@ class App extends Component {
             passwordError: '',
             success: ''
         }
-        this._isMounted = false;
+        // this._isMounted = false;
         this.getCurrentUser = this.getCurrentUser.bind(this);
         this.handleSignup = this.handleSignup.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
@@ -29,7 +29,6 @@ class App extends Component {
 
     // grab current user again if app component is refreshed
     componentDidMount(){
-        this._isMounted = true;
         if (this.state.loggedIn){
             axiosInstance.get('/current_user/')
             .then(result => {
@@ -113,10 +112,6 @@ class App extends Component {
         localStorage.removeItem('access_token');
         this.setState({ loggedIn: false, success: ''}, function(){console.log(this.state.loggedIn)});
     };
-
-    componentWillUnmount() {
-        this._isMounted = false;
-     };
 
     render() {
         // console.log(this.state.loggedIn)

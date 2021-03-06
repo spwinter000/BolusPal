@@ -163,7 +163,7 @@ class BolusList extends Component {
     getFoodsIntoBolus(){
         for(let bolus of this.state.data){
             bolus.foods = [];
-            bolus.collapsed = true;
+            // bolus.collapsed = true;
         }
         for(let i = 0; i < this.state.foods.length; i++){
             for (let j = 0; j < this.state.data.length; j++){
