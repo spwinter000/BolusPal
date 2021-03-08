@@ -159,11 +159,10 @@ class BolusList extends Component {
             });
         }
 
-    // take foods pulled from api and put them into relative bolus arrays, also set collapsed food table = true
+    // take foods pulled from api and put them into relative bolus arrays
     getFoodsIntoBolus(){
         for(let bolus of this.state.data){
             bolus.foods = [];
-            // bolus.collapsed = true;
         }
         for(let i = 0; i < this.state.foods.length; i++){
             for (let j = 0; j < this.state.data.length; j++){
@@ -217,7 +216,7 @@ class BolusList extends Component {
                 <h2 className="title">Your Boluses</h2>
                 <button className="btn btn-primary" id="new-bolus" onClick={() => this.setState({handleNewBolus: true})}>Add New Bolus</button>
                 <hr></hr>
-                {this.state.handleNewBolus ? <NewBolus handleExitNewBolusForm={this.handleExitNewBolusForm}/> : null}
+                {this.state.handleNewBolus ? <NewBolus handleExitNewBolusForm={this.handleExitNewBolusForm} loggedInID={this.props.loggedInID}/> : null}
             <ul>
             {this.state.data.map((item, i) => (
                 <div className="bolus-outer" key={i}>

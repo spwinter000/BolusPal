@@ -42,9 +42,18 @@
 }
 
 #new-bolus-button-x{
-    /* height: 15px;
-    width: 15px; */
     float: right;
+}
+
+.errors_hint{
+    background: #d45252;
+    border-radius: 3px 3px 3px 3px;
+    color: white;
+    margin-left:8px;
+    padding: 1px 6px;
+    z-index: 999; /* hints stay above all other elements */
+    position: absolute; /* allows proper formatting if hint is two lines */
+    /* display: none; */
 }
 
 #new-food{

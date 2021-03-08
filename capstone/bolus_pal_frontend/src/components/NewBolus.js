@@ -7,25 +7,56 @@ class NewBolus extends Component {
         this.state = {
             addFood: false,
             addFoodLabel: 'Add Food (+)',
+            errors: '',
+            userInfo: [],
             foodName: '',
             carbs: 0,
-            servings: 0,
+            servings: 1,
             foodAdded: [],
+            bloodSugar: '',
+            carbTotal: 0,
             bolusTotal: 0,
-            carbTotal: 0   
         }
         this.handleChange = this.handleChange.bind(this);
+        this.fetchUsers = this.fetchUser.bind(this);
         this.addFoodToForm = this.addFoodToForm.bind(this);
     }
 
     // go into state and find name from target element and set that property's value to target element value
     handleChange(event){
-        this.setState({[event.target.name]: event.target.value})
+        this.setState({[event.target.name]: event.target.value}, () => this.validateBloodSugar());
+        // console.log(this.props.loggedInID)
     }
 
+    // show warning if bloodsugar is too high, else leave errors blank
+    validateBloodSugar(){
+        if (this.state.bloodSugar > 300) {
+            // console.log('Blood sugar is over 300. Consider bolusing and waiting 15 minutes before eating.');
+            this.setState({errors: 'Blood sugar is over 300. Consider bolusing and waiting 15 minutes before eating.'}, () => this.incrementBolus())
+        }
+        else {
+            this.setState({errors: ''}, () => this.incrementBolus());
+        }
+    }
+
+    fetchUser(){
+        fetch(`api/users/${this.props.loggedInID}`)
+        .then(response => {
+            return response.json();
+        })
+        .then(userInfo => {
+        this.setState(() => {
+            return {
+            userInfo,
+            loaded: true
+            };
+        });
+        console.log(this.state.userInfo)
+        });
+    }
+
+    //open add food modal
     renderAddFoodModal(){
-        // this.renderAddFoodLabel()
-        //open add food modal
         return (
             <table>
                 <thead>
@@ -37,10 +68,10 @@ class NewBolus extends Component {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input className="form-control" name="foodName" autoFocus type="text" id="input-value-2" onChange={this.handleChange} value={this.state.foodName} required/></td>
-                        <td><input className="form-control" name="carbs" autoFocus type="number" min="0" id="input-value-2" onChange={this.handleChange} value={this.state.carbs} required/></td>
-                        <td><input className="form-control" name="servings" autoFocus type="number" min="0" step="0.5" id="input-value-2" onChange={this.handleChange} value={this.state.servings} required/></td>
-                        <td><button className="btn btn-primary" id="new-food-button" onClick={e => this.addFoodToForm(e)}>Add</button></td>
+                        <td><form id="newfood"><input className="form-control" name="foodName" autoFocus type="text" id="input-value-2" onChange={this.handleChange} value={this.state.foodName} required/></form></td>
+                        <td><input form="newfood" className="form-control" name="carbs" autoFocus type="number" min="0" id="input-value-2" onChange={this.handleChange} value={this.state.carbs} required/></td>
+                        <td><input form="newfood" className="form-control" name="servings" autoFocus type="number" min="0" step="0.5" id="input-value-2" onChange={this.handleChange} value={this.state.servings} required/></td>
+                        <td><button form="newfood" className="btn btn-primary" id="new-food-button" onClick={e => this.addFoodToForm(e)}>Add</button></td>
                     </tr>
                     {/* once foods are added, show them below the input fields */}
                         {this.state.foodAdded.map((item, i) => (
@@ -68,7 +99,7 @@ class NewBolus extends Component {
         }
     }
 
-    //adding foods to food list in new bolus form
+    // adding foods to food list in new bolus form, increment carb total
     addFoodToForm(event){
         event.preventDefault();
         // add new food to state, and clear input values
@@ -83,7 +114,7 @@ class NewBolus extends Component {
             ],
             foodName: '',
             carbs: 0,
-            servings: 0
+            servings: 1
         });
 
         // add up carbs of foodAdded array to display as carb total
@@ -96,26 +127,10 @@ class NewBolus extends Component {
         }
         this.setState({
             carbTotal: carbTotal
-        })
+        }, () => this.incrementBolus())
     }
 
-    // countCarbs(){
-    //     let foodsArr = [...this.state.foodAdded];
-    //     let carbTotal = this.state.carbTotal;
-
-    //     carbTotal = this.state.carbs * this.state.servings;
-    //     for (let i = 0; i < foodsArr.length; i++){
-    //         carbTotal += (foodsArr[i].carbs * foodsArr[i].servings);
-    //         // console.log(carbTotal);
-    //     }
-    //     this.setState({
-    //         carbTotal: carbTotal
-    //     })
-
-    //     // console.log(foodsArr)
-    // }
-
-    // remove food from list
+    // remove food from list, decrement carb total
     deleteFoodFromForm(event, index){
         event.preventDefault();
 
@@ -137,6 +152,41 @@ class NewBolus extends Component {
         });
     }
 
+    // add bolus to form
+    incrementBolus(){
+        const {low_threshold, high_threshold, carbs_per_unit} = this.state.userInfo;
+
+        // set units
+        let carbs = (this.state.carbTotal/carbs_per_unit);
+        
+        // set low and high adjustments
+        let lowAdjust = (((low_threshold - this.state.bloodSugar)/4))*(0.1);
+        let highAdjust = ((this.state.bloodSugar - high_threshold)/4)*(0.1);
+        let bolus = this.state.bolusTotal;
+
+        // deploy correction if possible
+        if (this.state.bloodSugar < low_threshold) {
+            bolus = carbs - lowAdjust //+ 0.5;
+        }
+        else if (this.state.bloodSugar > high_threshold) {
+            bolus = carbs + highAdjust;
+        }
+        else {
+            bolus = carbs;
+        }
+
+        this.setState({
+            bolusTotal: bolus.toFixed(1)
+        });
+    }
+
+    // delete bolus from form
+    decrementBolus(){}
+
+    componentDidMount(){
+        this.fetchUser();
+    }
+
     render(){
         return (
             <div>
@@ -144,14 +194,15 @@ class NewBolus extends Component {
                     <div className="new-bolus-form-inner">
                         <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</button>
                         <div className="form-group">
-                            <label id="label">Blood sugar:</label> <input className="form-control" autoFocus type="number" id="input-value" required></input> mg/dl<br/>
+                            <label id="label">Blood sugar:</label> <input className="form-control" name="bloodSugar" autoFocus type="number" id="input-value" onChange={this.handleChange} value={this.state.bloodSugar} required></input> mg/dl<br/>
                         </div>
+                        {this.state.errors.length > 0 ? <span className="errors_hint">{this.state.errors}</span> : null}
                         <div className="form-group">
                             <label id="label">Food Items:</label> <a id="new-food" type="submit" onClick={() => { this.setState({addFood: !this.state.addFood}); this.renderAddFoodLabel(); }}>{this.state.addFoodLabel}</a><br/>
                             {this.state.addFood ? this.renderAddFoodModal() : null}
                         </div>
                         <div className="form-group">
-                            <label id="label">Carbohydrate total:</label> {this.state.carbTotal}g<br/>
+                            <label id="label">Carbohydrate Total:</label> {this.state.carbTotal}g<br/>
                         </div>
                         <div className="form-group">
                             <label id="label">Bolus Total:</label> {this.state.bolusTotal} units<br/>
