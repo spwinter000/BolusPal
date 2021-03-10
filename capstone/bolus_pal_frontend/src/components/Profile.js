@@ -6,7 +6,6 @@ class Profile extends Component {
         super(props);
         this.state = {
             data: [],
-            // // test: 'hiiiiiiisfsf',
             loaded: false,
             placeholder: "Loading",
             // highThreshold: '',

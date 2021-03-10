@@ -221,7 +221,7 @@ class BolusList extends Component {
             {this.state.data.map((item, i) => (
                 <div className="bolus-outer" key={i}>
                     <div className="bolus-inner">
-                        {/* <h3>Lunch</h3> */}
+                        <h3>{item.title}</h3>
                         <p id="timestamp">{this.convertISODate.call(this, item.timestamp)}</p>
                         <p id="label">Blood sugar:</p> <p id="value">{item.blood_sugar}mg/dl</p> <br/>
                         <p id="label">Foods:</p> <i className={this.renderFoodIcon(item.id)} onClick={this.renderFoodTable.bind(this, item.id)}></i><br/>

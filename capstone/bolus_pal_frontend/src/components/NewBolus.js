@@ -1,4 +1,5 @@
 import React, { Component }from 'react';
+import { getCookie } from './../getCookie';
 // import NewBolus from './NewBolus';
 
 class NewBolus extends Component {
@@ -9,6 +10,7 @@ class NewBolus extends Component {
             addFoodLabel: 'Add Food (+)',
             errors: '',
             userInfo: [],
+            bolusTitle: '',
             foodName: '',
             carbs: 0,
             servings: 1,
@@ -149,7 +151,7 @@ class NewBolus extends Component {
         this.setState({
             foodAdded: foodArr,
             carbTotal: carbTotal
-        });
+        }, () => this.incrementBolus());
     }
 
     // add bolus to form
@@ -166,7 +168,7 @@ class NewBolus extends Component {
 
         // deploy correction if possible
         if (this.state.bloodSugar < low_threshold) {
-            bolus = carbs - lowAdjust //+ 0.5;
+            bolus = carbs - lowAdjust;
         }
         else if (this.state.bloodSugar > high_threshold) {
             bolus = carbs + highAdjust;
@@ -180,8 +182,41 @@ class NewBolus extends Component {
         });
     }
 
-    // delete bolus from form
-    decrementBolus(){}
+    // reset form so user doesnt need to delete foods one by one
+    resetForm(event){
+        event.preventDefault();
+        this.setState({
+            addFood: false,
+            addFoodLabel: 'Add Food (+)',
+            foodAdded: [],
+            bolusTitle: '',
+            bloodSugar: '',
+            carbTotal: 0,
+            bolusTotal: 0,
+        });
+    }
+
+    submitBolus(event){
+    // two api calls, one to post bolus info, one to post food info
+    // console.log("bolus api fetched")
+    event.preventDefault();
+        fetch('api/boluses/', {
+            method: 'POST',
+            headers: {
+                // 'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                "title": this.state.bolusTitle,
+                "user": this.props.loggedInID,
+                "carb_total": this.state.carbTotal,
+                "blood_sugar": this.state.bloodSugar,
+                "bolus_total": this.state.bolusTotal
+              })
+        })
+        .then(response => response.json());
+    }
 
     componentDidMount(){
         this.fetchUser();
@@ -190,9 +225,12 @@ class NewBolus extends Component {
     render(){
         return (
             <div>
-                <form className="new-bolus-form">
+                <form className="new-bolus-form" action={this.submitBolus}>
                     <div className="new-bolus-form-inner">
                         <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</button>
+                        <div className="form-group">
+                            <label id="label">Title:</label> <input className="form-control" name="bolusTitle" autoFocus type="text" id="input-value" onChange={this.handleChange} value={this.state.bolusTitle} required></input><br/>
+                        </div>
                         <div className="form-group">
                             <label id="label">Blood sugar:</label> <input className="form-control" name="bloodSugar" autoFocus type="number" id="input-value" onChange={this.handleChange} value={this.state.bloodSugar} required></input> mg/dl<br/>
                         </div>
@@ -207,7 +245,10 @@ class NewBolus extends Component {
                         <div className="form-group">
                             <label id="label">Bolus Total:</label> {this.state.bolusTotal} units<br/>
                         </div>
-                        <input className="btn btn-primary" type="submit" value="Submit"/>
+                        {/* <div class="form-group" id="submit-bolus"> */}
+                        <button className="btn btn-secondary" onClick={(e) => this.resetForm(e)}>Reset Form</button>
+                        <button className="btn btn-primary" id="submit-bolus" onClick={(e) => this.submitBolus(e)} type="submit">Submit</button>
+                        {/* </div> */}
                     </div>
                 </form>
             </div>

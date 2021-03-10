@@ -6,7 +6,6 @@
     margin-left: 20px;
 }
 
-
 .body{
     margin-left: 50px;
 }
@@ -38,6 +37,7 @@
 }
 
 .new-bolus-form-inner{
+    /* display: flex; */
     margin: 10px 10px 10px 10px;
 }
 
@@ -45,15 +45,16 @@
     float: right;
 }
 
+
 .errors_hint{
     background: #d45252;
     border-radius: 3px 3px 3px 3px;
     color: white;
-    margin-left:8px;
+    margin-left: 8px;
     padding: 1px 6px;
     z-index: 999; /* hints stay above all other elements */
     position: absolute; /* allows proper formatting if hint is two lines */
-    /* display: none; */
+    /* transition-delay: 2s; */
 }
 
 #new-food{
@@ -75,6 +76,10 @@
 
 #input-value-2:nth-child(n+2){
     margin-left: 5px;
+}
+
+#submit-bolus{
+    float: right;
 }
 
 /* try to get this removed from under delete button */

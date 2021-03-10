@@ -54,7 +54,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class BolusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bolus
-        fields = ['id', 'user', 'carb_total', 'blood_sugar', 'bolus_total', 'timestamp']
+        fields = ['id', 'title', 'user', 'carb_total', 'blood_sugar', 'bolus_total', 'timestamp']
 
 class FoodSerializer(serializers.ModelSerializer):
     class Meta:

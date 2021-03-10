@@ -23,6 +23,7 @@ class CustomUser(AbstractUser):
 
 class Bolus(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, default=1)
+    title = models.CharField(blank=True, max_length=40)
     # high_threshold = models.ForeignKey(High_threshold, on_delete=models.CASCADE)
     # low_threshold = models.ForeignKey(Low_threshold, on_delete=models.CASCADE)
     # carbs_per_unit = models.ForeignKey(Carbs_per_unit, on_delete=models.CASCADE)
