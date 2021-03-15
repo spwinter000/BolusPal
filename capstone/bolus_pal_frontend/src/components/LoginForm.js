@@ -38,8 +38,8 @@ class LoginForm extends Component {
                     </form>
                 </div>
             );
+        }
     }
-}
 }
  
 export default LoginForm;

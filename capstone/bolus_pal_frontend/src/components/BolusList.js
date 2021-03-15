@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import NewBolus from './NewBolus';
+import { getCookie } from './../getCookie';
+// import CSRFToken from './csrfToken';
 
 class BolusList extends Component {
     constructor(props){
@@ -11,7 +13,8 @@ class BolusList extends Component {
             placeholder: "Loading",
             handleNewBolus: false,
             shown: {},
-            iconClass: "fas fa-caret-right"
+            iconClass: "fas fa-caret-right",
+            // latestBolus: ''
             // tableCollapsed: true
             // addFood: false,
             // bolusTotal: 0,
@@ -22,6 +25,9 @@ class BolusList extends Component {
         this.getFoods = this.getFoods.bind(this);
         this.convertISODate = this.convertISODate.bind(this);
         this.handleExitNewBolusForm = this.handleExitNewBolusForm.bind(this);
+        this.handleNewBolus = this.handleNewBolus.bind(this);
+        // this.grabLatestBolusID = this.grabLatestBolusID.bind(this);
+        this.handleNewFoods = this.handleNewFoods.bind(this);
         this.renderFoodTable = this.renderFoodTable.bind(this);
         this._isMounted = false;
     }
@@ -103,7 +109,98 @@ class BolusList extends Component {
 
     // submit new bolus to db, render on page
     
-    submitNewBolus(){
+    handleNewBolus(data){
+        //args: event, then everything I need in newBolus' state
+        // event.preventDefault();
+        // const loggedInID = this.props.loggedInID;
+        return new Promise((resolve) => {
+        fetch('api/boluses/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                "title": data.bolusTitle,
+                "user": this.props.loggedInID,
+                "carb_total": data.carbTotal,
+                "blood_sugar": data.bloodSugar,
+                "bolus_total": data.bolusTotal
+              })
+        })
+        .then(response => response.json())
+        .catch(error => {
+            throw error;
+        });
+        // this.grabLatestBolusID();
+        resolve()
+    });
+    // call grabLatestBolusID right after the above is finished
+    }
+
+    // fetch first bolus in bolus endpoint
+    // grabLatestBolusID(){
+    //     this._isMounted = true;
+    //     // const response = await this.handleNewBolus();
+    //     // if (response){
+    //         fetch('api/boluses/')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const loggedInID = this.props.loggedInID;
+    //             // return data[0].id;
+    //             // for(let i = 0; i < data.length; i++){
+    //             if (data[0].user === loggedInID && this._isMounted){
+    //                     // console.log(data[0].id);
+    //                 this.setState({
+    //                     latestBolus: data[0].id
+    //                 }, () => this.getlatestBolus2());
+    //             }
+    //             // }
+    //         })
+    //         .catch(error => {
+    //             throw error;
+    //         });
+    //         // console.log(this.state.latestBolus)
+    // }
+
+    // getlatestBolus2(){
+    //     console.log(this.state.latestBolus)
+    //     return this.state.latestBolus;
+    // }
+
+    // newBolusAndBolusID(){
+    //     this.handleNewBolus(data).then(() => {this.grabLatestBolusID})
+    // }
+
+    handleNewFoods(data, state){
+        this._isMounted = true;
+
+        // console.log('handleNewFoods called')
+        for(let food of data){
+            console.log(state.latestBolus)
+            // console.log(food)
+            fetch('api/foods/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json, */*',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                // for(let i = 0; i < data.length; i++)
+                // for (let item in data)
+                body: JSON.stringify({
+                    "bolus": state.latestBolus,
+                    "name": food.foodName,
+                    "carbs": food.carbs,
+                    "servings": food.servings
+                })
+            })
+            .then(response => response.json())
+            .catch(error => {
+                throw error;
+            });
+            // return food;
+        }
     }
 
     // retrieve list of boluses from api
@@ -201,28 +298,45 @@ class BolusList extends Component {
 
     componentDidMount(){
         this._isMounted = true;
+
+        // this.grabLatestBolusID();
+        // this.handleNewFoods();
+        // console.log(this.state.latestBolus)
+        // console.log(this.state.latestBolus)
+
         this.getBoluses();
         this.getFoods();
     }
-
+    
     componentWillUnmount() {
         this._isMounted = false;
     }
     
     render() {
+        // this.grabLatestBolusID();
         this.getFoodsIntoBolus();
         return (
             <div className="">
                 <h2 className="title">Your Boluses</h2>
                 <button className="btn btn-primary" id="new-bolus" onClick={() => this.setState({handleNewBolus: true})}>Add New Bolus</button>
                 <hr></hr>
-                {this.state.handleNewBolus ? <NewBolus handleExitNewBolusForm={this.handleExitNewBolusForm} loggedInID={this.props.loggedInID}/> : null}
+                {this.state.handleNewBolus ? 
+                <NewBolus 
+                    handleExitNewBolusForm={this.handleExitNewBolusForm}
+                    handleNewBolus={this.handleNewBolus}
+                    // grabLatestBolusID={this.grabLatestBolusID}
+                    handleNewFoods={this.handleNewFoods}
+                    // latestBolus={this.state.latestBolus}
+                    // newBolusAndBolusID={this.newBolusAndBolusID}
+                    loggedInID={this.props.loggedInID}
+                /> : null}
             <ul>
             {this.state.data.map((item, i) => (
                 <div className="bolus-outer" key={i}>
                     <div className="bolus-inner">
                         <h3>{item.title}</h3>
                         <p id="timestamp">{this.convertISODate.call(this, item.timestamp)}</p>
+                        {/* <hr></hr> */}
                         <p id="label">Blood sugar:</p> <p id="value">{item.blood_sugar}mg/dl</p> <br/>
                         <p id="label">Foods:</p> <i className={this.renderFoodIcon(item.id)} onClick={this.renderFoodTable.bind(this, item.id)}></i><br/>
                         {this.state.shown[item.id] ?

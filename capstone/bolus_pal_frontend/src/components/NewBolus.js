@@ -10,6 +10,7 @@ class NewBolus extends Component {
             addFoodLabel: 'Add Food (+)',
             errors: '',
             userInfo: [],
+            latestBolus: '',
             bolusTitle: '',
             foodName: '',
             carbs: 0,
@@ -22,18 +23,17 @@ class NewBolus extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.fetchUsers = this.fetchUser.bind(this);
         this.addFoodToForm = this.addFoodToForm.bind(this);
+        this.newBolusAndBolusID = this.newBolusAndBolusID.bind(this);
     }
 
     // go into state and find name from target element and set that property's value to target element value
     handleChange(event){
         this.setState({[event.target.name]: event.target.value}, () => this.validateBloodSugar());
-        // console.log(this.props.loggedInID)
     }
 
     // show warning if bloodsugar is too high, else leave errors blank
     validateBloodSugar(){
         if (this.state.bloodSugar > 300) {
-            // console.log('Blood sugar is over 300. Consider bolusing and waiting 15 minutes before eating.');
             this.setState({errors: 'Blood sugar is over 300. Consider bolusing and waiting 15 minutes before eating.'}, () => this.incrementBolus())
         }
         else {
@@ -41,6 +41,7 @@ class NewBolus extends Component {
         }
     }
 
+    // get user info for boluses
     fetchUser(){
         fetch(`api/users/${this.props.loggedInID}`)
         .then(response => {
@@ -53,7 +54,25 @@ class NewBolus extends Component {
             loaded: true
             };
         });
-        console.log(this.state.userInfo)
+        // console.log(this.state.userInfo)
+        });
+    }
+
+    // fetch first bolus in bolus endpoint then add one to it
+    fetchLatestBolusID(){
+        this._isMounted = true;
+        fetch('api/boluses/')
+        .then(response => response.json())
+        .then(data => {
+            const loggedInID = this.props.loggedInID;
+            if (data[0].user === loggedInID && this._isMounted){
+                this.setState({
+                    latestBolus: data[0].id + 1
+                }, () =>  console.log(this.state.latestBolus));
+            }
+        })
+        .catch(error => {
+            throw error;
         });
     }
 
@@ -182,7 +201,7 @@ class NewBolus extends Component {
         });
     }
 
-    // reset form so user doesnt need to delete foods one by one
+    // reset form so user doesn't need to delete foods one by one
     resetForm(event){
         event.preventDefault();
         this.setState({
@@ -196,36 +215,30 @@ class NewBolus extends Component {
         });
     }
 
-    submitBolus(event){
-    // two api calls, one to post bolus info, one to post food info
-    // console.log("bolus api fetched")
-    event.preventDefault();
-        fetch('api/boluses/', {
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({
-                "title": this.state.bolusTitle,
-                "user": this.props.loggedInID,
-                "carb_total": this.state.carbTotal,
-                "blood_sugar": this.state.bloodSugar,
-                "bolus_total": this.state.bolusTotal
-              })
-        })
-        .then(response => response.json());
-    }
-
     componentDidMount(){
         this.fetchUser();
+        this.fetchLatestBolusID();
+        // this.props.fetchLatestBolusID();
+        
     }
+
+    // testMethod(){
+    //     this.props.handleNewFoods(this.state.foods);
+    // }
+
+    newBolusAndBolusID(){
+        this.props.handleNewBolus(this.state)
+        // this.props.fetchLatestBolusID();
+        // .then(() => this.props.fetchLatestBolusID())
+        .then(() => this.props.handleNewFoods(this.state.foodAdded, this.state))
+        // this.props.handleNewFoods(this.state.foodAdded, this.state);
+    }
+    // () => { this.newBolusAndBolusID(), this.props.handleNewFoods(this.state.foodAdded); }
 
     render(){
         return (
             <div>
-                <form className="new-bolus-form" action={this.submitBolus}>
+                <form className="new-bolus-form" onSubmit={() => this.newBolusAndBolusID()}>
                     <div className="new-bolus-form-inner">
                         <button className="btn btn-danger btn-sm" id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</button>
                         <div className="form-group">
@@ -247,7 +260,7 @@ class NewBolus extends Component {
                         </div>
                         {/* <div class="form-group" id="submit-bolus"> */}
                         <button className="btn btn-secondary" onClick={(e) => this.resetForm(e)}>Reset Form</button>
-                        <button className="btn btn-primary" id="submit-bolus" onClick={(e) => this.submitBolus(e)} type="submit">Submit</button>
+                        <button className="btn btn-primary" id="submit-bolus" type="submit">Submit</button>
                         {/* </div> */}
                     </div>
                 </form>

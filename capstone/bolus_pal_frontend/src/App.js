@@ -37,7 +37,7 @@ class App extends Component {
                     loggedInUsername: result.data.username, 
                     loggedInID: result.data.id
                 })
-                console.log(result)
+                // console.log(result)
             },
             ).catch(error => {
                 throw error;
