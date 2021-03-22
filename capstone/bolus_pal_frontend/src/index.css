@@ -13,16 +13,50 @@
 
 /* SETTINGS PAGE */
 .settings-div-outer{
+    /* flex-wrap: wrap; */
     text-align: center;
-    width: 200px;
+    width: 300px;
     margin:0 auto;
     margin-top: 40px;
 }
 
 .settings-div-inner{
     text-align: left;
-    width: 200px;
+    width: 300px;
 }
+
+/* .user-specs{
+    flex-wrap: wrap;
+} */
+
+.user-specs p, .input{
+    display: inline-block;
+    line-height: 25px;
+}
+
+.user-specs input{
+    display: inline-block;
+    width: 50px;
+}
+
+.user-specs p{
+    margin-right: 10px;
+    /* font-weight: 500; */
+}
+
+/* .user-specs .input, button{
+    display: inline-block;
+} */
+
+.input input, button{
+    display: inline-block;
+}
+
+.input p, button{
+    display: inline-block;
+} 
+
+
 
 /* BOLUSES PAGE */
 

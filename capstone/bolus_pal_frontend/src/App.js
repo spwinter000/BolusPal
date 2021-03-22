@@ -30,7 +30,7 @@ class App extends Component {
     // grab current user again if app component is refreshed
     componentDidMount(){
         if (this.state.loggedIn){
-            axiosInstance.get('/current_user/')
+            axiosInstance.get('bolus_pal/current_user/')
             .then(result => {
                 axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
                 this.setState({ 
@@ -45,7 +45,7 @@ class App extends Component {
         }
     }
     
-    //once user logs in, grab username to display in welcome message
+    // once user logs in, grab username to display in welcome message
     getCurrentUser() {
         if (this.state.loggedIn){
             fetch('http://127.0.0.1:8000/bolus_pal/current_user/', {
@@ -72,7 +72,7 @@ class App extends Component {
                 passwordError: 'Passwords must match.'
             });
         } else {
-        axiosInstance.post('/user/create/', {
+        axiosInstance.post('bolus_pal/user/create/', {
             username: data.username,
             email: data.email,
             password: data.password
@@ -92,7 +92,7 @@ class App extends Component {
 
     handleLogin(event, data){
         event.preventDefault();
-        axiosInstance.post('/token/obtain/', {
+        axiosInstance.post('bolus_pal/token/obtain/', {
             username: data.username,
             password: data.password
         }).then(result => {
@@ -100,7 +100,7 @@ class App extends Component {
             localStorage.setItem('access_token', result.data.access);
             localStorage.setItem('refresh_token', result.data.refresh);
             // console.log(result)
-            this.setState({ loggedIn: true}, function(){console.log(this.state.loggedIn)}), // set loggedIn to true to show logged in nav, username
+            this.setState({loggedIn: true}, function(){console.log(this.state.loggedIn)}), // set loggedIn to true to show logged in nav, username
             this.getCurrentUser()
         },
         ).catch(error => {
@@ -128,28 +128,34 @@ class App extends Component {
                     <Route path="/register"
                         component={() => 
                             <SignupForm 
-                                loggedIn = {this.state.loggedIn}
-                                usernameError = {this.state.usernameError}
-                                passwordError = {this.state.passwordError}
-                                success = {this.state.success}
+                                loggedIn={this.state.loggedIn}
+                                usernameError={this.state.usernameError}
+                                passwordError={this.state.passwordError}
+                                success={this.state.success}
                                 handleSignup={this.handleSignup}
                             />}
                         />
                     <Route path="/boluses" 
                         component={() => 
                             <BolusList
-                                loggedInUsername = {this.state.loggedInUsername}
-                                loggedInID = {this.state.loggedInID}
+                                loggedInUsername={this.state.loggedInUsername}
+                                loggedInID={this.state.loggedInID}
                             />}
                         />
                     <Route path="/login" 
                         component={() => 
                             <LoginForm 
-                                loggedIn = {this.state.loggedIn}
+                                loggedIn={this.state.loggedIn}
                                 handleLogin={this.handleLogin}
                             />}
                         />
-                    <Route path="/profile" component={Profile}/>
+                    <Route path="/profile" 
+                        component={() => 
+                            <Profile 
+                                loggedIn={this.state.loggedIn}
+                                loggedInID={this.state.loggedInID}
+                            />}
+                    />
                 </Switch>
             </div>
         );

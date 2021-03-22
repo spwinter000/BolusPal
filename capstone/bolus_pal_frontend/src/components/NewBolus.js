@@ -1,5 +1,6 @@
 import React, { Component }from 'react';
 import { getCookie } from './../getCookie';
+import axiosInstance from './../AxiosApi';
 // import NewBolus from './NewBolus';
 
 class NewBolus extends Component {
@@ -43,16 +44,13 @@ class NewBolus extends Component {
 
     // get user info for boluses
     fetchUser(){
-        fetch(`api/users/${this.props.loggedInID}`)
-        .then(response => {
-            return response.json();
-        })
+        axiosInstance.get(`api/users/${this.props.loggedInID}`)
+        // .then(response => {
+        //     return response.json();
+        // })
         .then(userInfo => {
-        this.setState(() => {
-            return {
-            userInfo,
-            loaded: true
-            };
+        this.setState({
+            userInfo: userInfo.data
         });
         // console.log(this.state.userInfo)
         });
@@ -61,13 +59,14 @@ class NewBolus extends Component {
     // fetch first bolus in bolus endpoint then add one to it
     fetchLatestBolusID(){
         this._isMounted = true;
-        fetch('api/boluses/')
-        .then(response => response.json())
-        .then(data => {
+        axiosInstance.get('api/boluses/')
+        // .then(response => response.json())
+        .then(result => {
+            console.log(result)
             const loggedInID = this.props.loggedInID;
-            if (data[0].user === loggedInID && this._isMounted){
+            if (result.data[0].user === loggedInID && this._isMounted){
                 this.setState({
-                    latestBolus: data[0].id + 1
+                    latestBolus: result.data[0].id + 1
                 }, () =>  console.log(this.state.latestBolus));
             }
         })

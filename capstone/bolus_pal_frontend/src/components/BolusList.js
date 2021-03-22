@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NewBolus from './NewBolus';
 import { getCookie } from './../getCookie';
+import axiosInstance from './../AxiosApi';
 // import CSRFToken from './csrfToken';
 
 class BolusList extends Component {
@@ -114,26 +115,17 @@ class BolusList extends Component {
         // event.preventDefault();
         // const loggedInID = this.props.loggedInID;
         return new Promise((resolve) => {
-        fetch('api/boluses/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({
-                "title": data.bolusTitle,
-                "user": this.props.loggedInID,
-                "carb_total": data.carbTotal,
-                "blood_sugar": data.bloodSugar,
-                "bolus_total": data.bolusTotal
-              })
+        axiosInstance.post('api/boluses/', {
+            title: data.bolusTitle,
+            user: this.props.loggedInID,
+            carb_total: data.carbTotal,
+            blood_sugar: data.bloodSugar,
+            bolus_total: data.bolusTotal
         })
-        .then(response => response.json())
         .catch(error => {
             throw error;
         });
-        // this.grabLatestBolusID();
-        resolve()
+        resolve();
     });
     // call grabLatestBolusID right after the above is finished
     }
@@ -174,8 +166,6 @@ class BolusList extends Component {
 
     handleNewFoods(data, state){
         this._isMounted = true;
-
-        // console.log('handleNewFoods called')
         for(let food of data){
             console.log(state.latestBolus)
             // console.log(food)
@@ -186,8 +176,6 @@ class BolusList extends Component {
                     'Accept': 'application/json, */*',
                     'X-CSRFToken': getCookie('csrftoken')
                 },
-                // for(let i = 0; i < data.length; i++)
-                // for (let item in data)
                 body: JSON.stringify({
                     "bolus": state.latestBolus,
                     "name": food.foodName,
@@ -199,26 +187,30 @@ class BolusList extends Component {
             .catch(error => {
                 throw error;
             });
-            // return food;
         }
     }
 
     // retrieve list of boluses from api
     getBoluses(){
         this._isMounted = true;
-        fetch('api/boluses/')
-        .then(response => {
-            if (response.status > 400) {
-                return this.setState({ placeholder: "Something went wrong!" });
-            }
-            return response.json();
-        })
-        .then(data => {
-            // console.log(data)
+        axiosInstance.get('api/boluses/')
+        // ,{
+        //     headers: {
+        //         'Authorization': "JWT " + localStorage.getItem('access_token')
+        //     }
+        // })
+        // .then(response => {
+        //     if (response.status > 400) {
+        //         return this.setState({ placeholder: "Something went wrong!" });
+        //     }
+        //     return response.json();
+        // })
+        .then(result => {
+            console.log(result)
             let newArr = [];
-            for (let bolus of data){
+            for (let bolus of result.data){
                 if (bolus.user === this.props.loggedInID){
-                    newArr.push(bolus)
+                    newArr.push(bolus);
                 }
             }
             if(this._isMounted) {
@@ -226,23 +218,28 @@ class BolusList extends Component {
                     data: newArr,
                     loaded: true
                 }
-                )};
-            });
-        }
+            )};
+        });
+    }
 
     getFoods(){
         this._isMounted = true;
-        fetch('api/foods/')
-        .then(response => {
-            if (response.status > 400) {
-                return this.setState({ placeholder: "Something went wrong!" });
-            }
-            return response.json();
-        })
-        .then(data => {
+        axiosInstance.get('api/foods/')
+        // , {
+        //     headers: {
+        //         'Authorization': "JWT " + localStorage.getItem('access_token')
+        //     }
+        // })
+        // .then(response => {
+        //     if (response.status > 400) {
+        //         return this.setState({ placeholder: "Something went wrong!" });
+        //     }
+        //     return response.json();
+        // })
+        .then(result => {
             // console.log(data)
             let newArr = [];
-            for (let food of data){
+            for (let food of result.data){
                 // if (f === this.props.loggedInID){
                 newArr.push(food)
                 // }
@@ -324,10 +321,7 @@ class BolusList extends Component {
                 <NewBolus 
                     handleExitNewBolusForm={this.handleExitNewBolusForm}
                     handleNewBolus={this.handleNewBolus}
-                    // grabLatestBolusID={this.grabLatestBolusID}
                     handleNewFoods={this.handleNewFoods}
-                    // latestBolus={this.state.latestBolus}
-                    // newBolusAndBolusID={this.newBolusAndBolusID}
                     loggedInID={this.props.loggedInID}
                 /> : null}
             <ul>
