@@ -122,7 +122,7 @@ class App extends Component {
                     handleLogout={this.handleLogout}
                 />
             <div className="container">
-                {this.state.loggedIn ? <p className="welcome">Welcome, {this.state.loggedInUsername}</p> : <p className="welcome"></p>}
+                {this.state.loggedIn ? <p className="welcome">Hi, <b>{this.state.loggedInUsername}</b>!</p> : <p className="welcome"></p>}
             </div>
                 <Switch>
                     <Route path="/register"

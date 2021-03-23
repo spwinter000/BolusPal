@@ -1,6 +1,8 @@
 import React, { Component }from 'react';
 import { getCookie } from './../getCookie';
 import axiosInstance from './../AxiosApi';
+import numberRollup from "number-rollup";
+
 // import NewBolus from './NewBolus';
 
 class NewBolus extends Component {
@@ -198,6 +200,13 @@ class NewBolus extends Component {
         this.setState({
             bolusTotal: bolus.toFixed(1)
         });
+
+        numberRollup({
+            id: "example",
+            startNumber: 0,
+            endNumber: 100,
+            duration: 500
+          });
     }
 
     // reset form so user doesn't need to delete foods one by one
@@ -256,6 +265,7 @@ class NewBolus extends Component {
                         </div>
                         <div className="form-group">
                             <label id="label">Bolus Total:</label> {this.state.bolusTotal} units<br/>
+                            {/* <label id="label">Bolus Total:</label> <p id="bolus_total">{this.state.bolusTotal}</p>units<br/> */}
                         </div>
                         {/* <div class="form-group" id="submit-bolus"> */}
                         <button className="btn btn-secondary" onClick={(e) => this.resetForm(e)}>Reset Form</button>

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import UserInfo from './UserInfo';
 import { getCookie } from './../getCookie';
-// import axiosInstance
 import axiosInstance from './../AxiosApi';
 
 class Profile extends Component {
@@ -36,7 +34,7 @@ class Profile extends Component {
         // })
         .then(result => {
             // axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
-            // console.log(result)
+            console.log(result)
             let newArr = [];
             newArr.push(result.data);
             if(this._isMounted) {
@@ -74,26 +72,28 @@ class Profile extends Component {
     // }
 
     saveInfo(event, low, high, carbs){
-        console.log('function called');
+        // console.log('function called');
         event.preventDefault();
-        fetch(`api/users/${this.props.loggedInID}/`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': "JWT " + localStorage.getItem('access_token'),
-                'Content-Type': 'application/json',
-                'Accept': 'application/json, */*',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({
-                "email": this.state.userInfo[0].email,
-                "username": this.state.userInfo[0].username,
-                // "password": "scott",
-                "low_threshold": parseInt(low),
-                "high_threshold": parseInt(high),
-                "carbs_per_unit": parseInt(carbs)            
-            })
-        })
-        .then(response => response.json())
+        axiosInstance.put(`api/users/${this.props.loggedInID}/`, {
+            email: this.state.userInfo[0].email,
+            username: this.state.userInfo[0].username,
+            // "password": "scott",
+            low_threshold: parseInt(low),
+            high_threshold: parseInt(high),
+            carbs_per_unit: parseInt(carbs) 
+        })           
+        // , {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Authorization': "JWT " + localStorage.getItem('access_token'),
+        //         'Content-Type': 'application/json',
+        //         'Accept': 'application/json, */*',
+        //         'X-CSRFToken': getCookie('csrftoken')
+        //     },
+            // body: JSON.stringify({
+            // })
+        // })
+        // .then(response => response.json())
         .catch(error => {
             throw error;
         });
@@ -136,7 +136,7 @@ class Profile extends Component {
                                         <p>{item.carbs_per_unit}mg/dl</p>
                                     </div>
 
-                                    <button key={'button'} onClick={() => { this.setState({edit: !this.state.edit, lowThreshold: item.low_threshold, highThreshold: item.high_threshold, carbsPerUnit: item.carbs_per_unit}), (e) => this.editInfo.bind(this, e, item.carbs_per_unit) }} id="edit-button">Update Information</button>
+                                    <button key={'button'} className="btn btn-primary" onClick={() => { this.setState({edit: !this.state.edit, lowThreshold: item.low_threshold, highThreshold: item.high_threshold, carbsPerUnit: item.carbs_per_unit}), (e) => this.editInfo.bind(this, e, item.carbs_per_unit) }} id="edit-button">Update Information</button>
                                 </div>
                                 :
                                 <div>
@@ -157,7 +157,7 @@ class Profile extends Component {
                                             <p><input type="number" name="carbsPerUnit" onChange={this.handleChange} value={this.state.carbsPerUnit}/> mg/dl </p>
                                         </div>
 
-                                        <button key={'button'} id="edit-button">Save Information</button>
+                                        <button key={'button'} className="btn btn-primary" id="edit-button">Save Information</button>
                                     </form>
                                 </div>
 

@@ -167,7 +167,7 @@ class BolusList extends Component {
     handleNewFoods(data, state){
         this._isMounted = true;
         for(let food of data){
-            console.log(state.latestBolus)
+            // console.log(state.latestBolus)
             // console.log(food)
             fetch('api/foods/', {
                 method: 'POST',
