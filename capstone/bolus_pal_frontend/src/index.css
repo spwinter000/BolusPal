@@ -1,3 +1,19 @@
+/* NAVBAR */
+#navbar{
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
+    /* color: white */
+    margin-bottom: 10px;
+}
+
+.logo{
+    display: block;
+    max-width:230px;
+    max-height:95px;
+    width: auto;
+    height: auto;
+}
+
 .welcome {
     float: right;
 }

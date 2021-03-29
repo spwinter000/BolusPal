@@ -26,74 +26,47 @@ class Profile extends Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    fetchUser(){
-        axiosInstance.get(`api/users/${this.props.loggedInID}`)
-            // headers: {
-            //     'Authorization': "JWT " + localStorage.getItem('access_token')
-            //     }
-        // })
+    fetchUserInfo(){
+        axiosInstance.get(`api/userinfos/`)
         .then(result => {
-            // axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
-            console.log(result)
+            console.log(result.data)
             let newArr = [];
-            newArr.push(result.data);
+            for (let user of result.data){
+                if (user.user === this.props.loggedInID){
+                    newArr.push(user);
+                }
+            }
+            // if(newArr.length === 0){
+            //     console.log('this user has no userInfo')
+            // }
             if(this._isMounted) {
                 this.setState({
                     userInfo: newArr,
-                    // highThreshold: userInfo.low_threshold,
-                    // lowThreshold: userInfo.high_threshold,
-                    // carbsPerUnit: userInfo.carbs_per_unit
                 }
-                // , () => console.log(this.state.userInfo)
+                , () => console.log(this.state.userInfo)
                 );
             }    
         })
-        // .then(userInfo => {
-        // });
     }
 
-    // getKey(){
-    //     return this.keyCount++;
-    // }
-
-    // editInfo(event, id){
-    //     event.preventDefault();
-
-    //     // send 
-
-    //     console.log('method activated')
-
-    //     this.setState({
-    //         editInfo: {
-    //             ...this.state.editInfo,
-    //             [id]: !this.state.editInfo[id],
-    //         }
-    //     });
-    // }
-
-    saveInfo(event, low, high, carbs){
+    saveInfo(low, high, carbs){
         // console.log('function called');
-        event.preventDefault();
-        axiosInstance.put(`api/users/${this.props.loggedInID}/`, {
-            email: this.state.userInfo[0].email,
-            username: this.state.userInfo[0].username,
-            // "password": "scott",
+        // event.preventDefault();
+        axiosInstance.put(`api/userinfos/${this.state.userInfo[0].id}/`, {
+            user: this.props.loggedInID,
             low_threshold: parseInt(low),
             high_threshold: parseInt(high),
             carbs_per_unit: parseInt(carbs) 
-        })           
-        // , {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Authorization': "JWT " + localStorage.getItem('access_token'),
-        //         'Content-Type': 'application/json',
-        //         'Accept': 'application/json, */*',
-        //         'X-CSRFToken': getCookie('csrftoken')
-        //     },
-            // body: JSON.stringify({
-            // })
-        // })
-        // .then(response => response.json())
+        }).then(result => { 
+            if (result){
+                this.setState({
+                    edit: true,
+                    highThreshold: high,
+                    lowThreshold: low,
+                    carbsPerUnit: carbs
+                })
+            }
+        })          
         .catch(error => {
             throw error;
         });
@@ -106,8 +79,7 @@ class Profile extends Component {
 
     componentDidMount() {
         this._isMounted = true;
-
-        this.fetchUser();
+        this.fetchUserInfo();
     }
 
     render() {
@@ -140,7 +112,7 @@ class Profile extends Component {
                                 </div>
                                 :
                                 <div>
-                                    <form onSubmit={(e) => this.saveInfo(e, this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
+                                    <form onSubmit={() => this.saveInfo(this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
                                         {/* <p>User: {item.username}</p> */}
                                         <p key={'1'}>Low threshold: </p>  
                                         <div key={item.low_threshold} className="input">

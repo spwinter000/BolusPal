@@ -1,19 +1,19 @@
 # from django.contrib.auth.models import User, High_threshold, Low_threshold, Carbs_per_unit, Bolss, Day
-from .models import CustomUser, Bolus, Food, Day
+from .models import User, UserInfo, Bolus, Food, Day
 from rest_framework_jwt.settings import api_settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from rest_framework import serializers
 
 
-class CustomUserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
 
     class Meta:
-        model = CustomUser
-        fields = ['id', 'email', 'username', 'password', 'high_threshold', 'low_threshold', 'carbs_per_unit']
+        model = User
+        fields = ['id', 'email', 'username', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
     # determines how object being serialized gets saved to the DB
@@ -35,20 +35,20 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # token['username'] = user.username
         return token
 
-# class HighThresholdSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = High_threshold
-#         fields = ['user', 'high_threshold']
+class UserInfoSerializer(serializers.ModelSerializer):
+    user: serializers.IntegerField()
+    high_threshold = serializers.IntegerField(default=120)
+    low_threshold = serializers.IntegerField(default=80)
+    carbs_per_unit = serializers.IntegerField(default=10)
+    
+    class Meta:
+        model = UserInfo
+        fields = ['id', 'user', 'high_threshold', 'low_threshold', 'carbs_per_unit']
 
-# class LowThresholdSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Low_threshold
-#         fields = ['user', 'low_threshold']
-
-# class CarbsPerUnitSerializer(serializers.HyperlinkedModelSerializer):
-#     class Meta:
-#         model = Carbs_per_unit
-#         fields = ['user', 'carbs_per_unit']
+        def create(self, validated_data):
+            instance = self.Meta.model(**validated_data)
+            instance.save()
+            return instance
 
 # changed from HyperlinkedModelSerializer
 class BolusSerializer(serializers.ModelSerializer):

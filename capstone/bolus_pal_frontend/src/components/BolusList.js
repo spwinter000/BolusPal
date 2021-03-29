@@ -206,22 +206,23 @@ class BolusList extends Component {
         //     return response.json();
         // })
         .then(result => {
-            console.log(result)
+            // console.log(result)
             let newArr = [];
             for (let bolus of result.data){
                 if (bolus.user === this.props.loggedInID){
                     newArr.push(bolus);
                 }
             }
-            if(this._isMounted) {
+            if(this._isMounted){
                 this.setState({
                     data: newArr,
                     loaded: true
-                }
+                }, () => console.log(this.state.data)
             )};
         });
     }
 
+    // get all foods
     getFoods(){
         this._isMounted = true;
         axiosInstance.get('api/foods/')
@@ -237,12 +238,10 @@ class BolusList extends Component {
         //     return response.json();
         // })
         .then(result => {
-            // console.log(data)
+            // console.log(result)
             let newArr = [];
             for (let food of result.data){
-                // if (f === this.props.loggedInID){
                 newArr.push(food)
-                // }
             }
             if(this._isMounted) {
                 this.setState({

@@ -63,6 +63,22 @@ class App extends Component {
             });
             }
         }
+
+    // go into db and get the id of last user created...cant do that since token is need to get into DB :(
+    // getLastUserCreated(){
+    //     axiosInstance.get('api/users')
+    //     .then(result => {
+    //         axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
+    //         this.setState({ 
+    //             loggedInUsername: result.data.username, 
+    //             loggedInID: result.data.id
+    //         })
+    //         // console.log(result)
+    //     },
+    //     ).catch(error => {
+    //         throw error;
+    //     })
+    // }
     
     handleSignup(event, data){
         event.preventDefault();
@@ -75,11 +91,11 @@ class App extends Component {
         axiosInstance.post('bolus_pal/user/create/', {
             username: data.username,
             email: data.email,
-            password: data.password
+            password: data.password,
         }).then(result => { 
             if (result){
                 this.setState({ success: 'Successful signup! Please proceed to login page.' })
-                // console.log(result);
+                console.log(result);
         }
         }).catch(error => {
             this.setState({

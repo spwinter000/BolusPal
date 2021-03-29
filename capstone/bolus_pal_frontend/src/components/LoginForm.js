@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CSRFToken from './csrfToken';
 import { Redirect } from 'react-router';
 
-
 class LoginForm extends Component {
     constructor(props){
         super(props);
@@ -23,7 +22,7 @@ class LoginForm extends Component {
         if (this.props.loggedIn === true) { 
             return (<Redirect to="/boluses" />);
          } else { 
-            return( 
+            return ( 
                 <div className="login">
                     <h2>Log In</h2>
                     <form onSubmit={e => this.props.handleLogin(e, this.state)} method="post">

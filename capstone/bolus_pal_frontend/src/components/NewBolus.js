@@ -1,7 +1,7 @@
 import React, { Component }from 'react';
 import { getCookie } from './../getCookie';
 import axiosInstance from './../AxiosApi';
-import numberRollup from "number-rollup";
+// import numberRollup from "number-rollup";
 
 // import NewBolus from './NewBolus';
 
@@ -24,7 +24,7 @@ class NewBolus extends Component {
             bolusTotal: 0,
         }
         this.handleChange = this.handleChange.bind(this);
-        this.fetchUsers = this.fetchUser.bind(this);
+        // this.fetchUserInfo = this.fetchUser.bind(this);
         this.addFoodToForm = this.addFoodToForm.bind(this);
         this.newBolusAndBolusID = this.newBolusAndBolusID.bind(this);
     }
@@ -45,18 +45,43 @@ class NewBolus extends Component {
     }
 
     // get user info for boluses
-    fetchUser(){
-        axiosInstance.get(`api/users/${this.props.loggedInID}`)
-        // .then(response => {
-        //     return response.json();
-        // })
-        .then(userInfo => {
-        this.setState({
-            userInfo: userInfo.data
-        });
-        // console.log(this.state.userInfo)
-        });
+    // fetchUser(){
+    //     axiosInstance.get(`api/users/${this.props.loggedInID}`)
+    //     // .then(response => {
+    //     //     return response.json();
+    //     // })
+    //     .then(userInfo => {
+    //     this.setState({
+    //         userInfo: userInfo.data
+    //     });
+    //     // console.log(this.state.userInfo)
+    //     });
+    // }
+
+    fetchUserInfo(){
+        axiosInstance.get(`api/userinfos/`)
+        .then(result => {
+            // console.log(result.data)
+            let newArr = [];
+            for (let user of result.data){
+                if (user.user === this.props.loggedInID){
+                    newArr.push(user);
+                    console.log(newArr)
+                }
+            }
+            if(this._isMounted) {
+                this.setState({
+                    userInfo: newArr,
+                }
+                , () => console.log(this.state.userInfo)
+                );
+            }    
+        })
     }
+
+    
+
+
 
     // fetch first bolus in bolus endpoint then add one to it
     fetchLatestBolusID(){
@@ -64,9 +89,15 @@ class NewBolus extends Component {
         axiosInstance.get('api/boluses/')
         // .then(response => response.json())
         .then(result => {
-            console.log(result)
+            // console.log(result)
             const loggedInID = this.props.loggedInID;
-            if (result.data[0].user === loggedInID && this._isMounted){
+            if (result.data.length === 0){
+                this.setState({
+                    latestBolus: 0
+                }, () =>  console.log(this.state.latestBolus));
+            }
+            // else if (result.data[0].user === loggedInID && this._isMounted){
+            else if (this._isMounted){
                 this.setState({
                     latestBolus: result.data[0].id + 1
                 }, () =>  console.log(this.state.latestBolus));
@@ -176,7 +207,7 @@ class NewBolus extends Component {
 
     // add bolus to form
     incrementBolus(){
-        const {low_threshold, high_threshold, carbs_per_unit} = this.state.userInfo;
+        const {low_threshold, high_threshold, carbs_per_unit} = this.state.userInfo[0];
 
         // set units
         let carbs = (this.state.carbTotal/carbs_per_unit);
@@ -201,12 +232,12 @@ class NewBolus extends Component {
             bolusTotal: bolus.toFixed(1)
         });
 
-        numberRollup({
-            id: "example",
-            startNumber: 0,
-            endNumber: 100,
-            duration: 500
-          });
+        // numberRollup({
+        //     id: "example",
+        //     startNumber: 0,
+        //     endNumber: 100,
+        //     duration: 500
+        //   });
     }
 
     // reset form so user doesn't need to delete foods one by one
@@ -224,7 +255,8 @@ class NewBolus extends Component {
     }
 
     componentDidMount(){
-        this.fetchUser();
+        // this.fetchUser();
+        this.fetchUserInfo();
         this.fetchLatestBolusID();
         // this.props.fetchLatestBolusID();
         

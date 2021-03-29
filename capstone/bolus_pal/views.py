@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 import datetime
 
-from .models import CustomUser, Bolus, Food, Day
+from .models import User, UserInfo, Bolus, Food, Day
 
 # rest framework and serialize imports
 from rest_framework import viewsets, permissions, status
@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import MyTokenObtainPairSerializer, CustomUserSerializer, BolusSerializer, FoodSerializer, DaySerializer
+from .serializers import MyTokenObtainPairSerializer, UserSerializer, UserInfoSerializer, BolusSerializer, FoodSerializer, DaySerializer
 
 # function to be used anytime the user revisits the site, reloads the page, or does anything else that causes React to forget its state. 
 @api_view(['GET'])
@@ -22,7 +22,7 @@ def current_user(request):
     """
     Determine the current user by their token, and return their data
     """
-    serializer = CustomUserSerializer(request.user)
+    serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
 # dummy view to test JWT
@@ -35,60 +35,72 @@ class ObtainTokenPairView(TokenObtainPairView):
     # permission_classes = (permissions.AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
 
-class CustomUserCreate(APIView):
+class UserCreate(APIView):
     """
-    Create a new user. It's called 'UserList' because normally we'd have a get
-    method here too, for retrieving a list of all User objects.
+    Create a new user.
+
     """
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.AllowAny,)
 
+    # create new user, then create new 'user_info' instance with new user as the 'user' field
     def post(self, request, format='json'):
-        serializer = CustomUserSerializer(data=request.data)
-        # serializer = CustomUserSerializer(data=request.data, context={'request': None})
-        if serializer.is_valid():
-            user = serializer.save()
+        user_serializer = UserSerializer(data=request.data)
+
+        if user_serializer.is_valid():
+            user = user_serializer.save()
+            
+            user_id = user.id
+            
+            userinfo_serializer = UserInfoSerializer(data={'user': user_id, 'high_threshold': 120, 'low_threshold': 80, 'carbs_per_unit': 10})
+            
+            if userinfo_serializer.is_valid():
+                user_info = userinfo_serializer.save()
+            
             if user:
-                json = serializer.data
+                json = user_serializer.data
                 return Response(json, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if user_info:
+                json = userinfo_serializer.data
+                return Response(json, status=status.HTTP_201_CREATED)
+        return Response(user_serializer.errors, userinfo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomUserViewSet(viewsets.ModelViewSet):
+        # if userinfo_serializer.is_valid():
+        #     user = userinfo_serializer.save()
+        #     if user:
+        #         json = userinfo_serializer.data
+        #         return Response(json, status=status.HTTP_201_CREATED)
+        # return Response(userinfo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        # original 
+        # if user_serializer.is_valid():
+        #     user = user_serializer.save()
+        #     if user:
+        #         json = user_serializer.data
+        #         return Response(json, status=status.HTTP_201_CREATED)
+        # return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
-    queryset = CustomUser.objects.all().order_by('-date_joined')
-    serializer_class = CustomUserSerializer
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     # def get_current_user(self):
     #     user = self.request.user
     #     return Users.objects.filter(user=user)
 
-# class HighThresholdViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows high thresholds to be viewed or edited.
-#     """
-#     queryset = High_threshold.objects.all()
-#     serializer_class = HighThresholdSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-# class LowThresholdViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows low thresholds to be viewed or edited.
-#     """
-#     queryset = Low_threshold.objects.all()
-#     serializer_class = LowThresholdSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
-# class CarbsPerUnitViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows carbs per unit number to be viewed or edited.
-#     """
-#     queryset = Carbs_per_unit.objects.all()
-#     serializer_class = CarbsPerUnitSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+class UserInfoViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows user info to be viewed or edited.
+    """
+    # timestamp = datetime
+    queryset = UserInfo.objects.all()
+    serializer_class = UserInfoSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class BolusViewSet(viewsets.ModelViewSet):
     """
