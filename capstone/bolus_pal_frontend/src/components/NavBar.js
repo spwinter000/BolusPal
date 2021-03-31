@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { NavLink, Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import boluspallogo from '../images/boluspal-logo.png';
+// import boluspallogo from '../images/boluspal-logo.png';
 
 const NavBar = ({loggedIn, handleLogout}) => {
 
     // if user is logged in, show a certain navbar, else show another with login and register
     const loggedInNav = (
         <nav className="navbar navbar-expand-lg navbar-light bg-white" id="navbar">
-                <Link className="navbar-brand" to="/"><img id="logo" src={require('../images/boluspal-logo.png').default}/></Link>
+                <Link className="navbar-brand" to="/boluses"><img id="logo" src={require('../images/boluspal-logo.png').default}/></Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -21,7 +21,7 @@ const NavBar = ({loggedIn, handleLogout}) => {
                         <NavLink className="nav-link" to="/profile">Profile</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link" onClick={handleLogout} to="/login">Logout</NavLink>
+                        <NavLink className="nav-link" id="logout" onClick={handleLogout} to="/login">Logout</NavLink>
                     </li>
                 </div>
             </div>

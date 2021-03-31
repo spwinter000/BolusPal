@@ -63,22 +63,6 @@ class App extends Component {
             });
             }
         }
-
-    // go into db and get the id of last user created...cant do that since token is need to get into DB :(
-    // getLastUserCreated(){
-    //     axiosInstance.get('api/users')
-    //     .then(result => {
-    //         axiosInstance.defaults.headers['Authorization'] = "JWT " + result.data.access;
-    //         this.setState({ 
-    //             loggedInUsername: result.data.username, 
-    //             loggedInID: result.data.id
-    //         })
-    //         // console.log(result)
-    //     },
-    //     ).catch(error => {
-    //         throw error;
-    //     })
-    // }
     
     handleSignup(event, data){
         event.preventDefault();
@@ -173,6 +157,19 @@ class App extends Component {
                             />}
                     />
                 </Switch>
+                <footer>
+                    <hr></hr>
+                    <i class="far fa-copyright fa-lg"></i>2021 Created by Scott Winter
+                    <br/>
+                    Follow us: 
+                    <div className="socials">
+                        <i className="fab fa-twitter fa-lg"></i>
+                        <i className="fab fa-instagram fa-lg"></i>
+                        <i className="fab fa-facebook fa-lg"></i>
+                        <i className="fab fa-google-plus-g fa-lg"></i>
+                        <i className="fab fa-pinterest fa-lg"></i>
+                    </div>
+                </footer>
             </div>
         );
     }

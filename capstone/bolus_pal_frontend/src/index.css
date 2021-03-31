@@ -1,49 +1,59 @@
 /* NAVBAR */
 #navbar{
+    height: 70px;
     border-radius: 5px;
     box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
     /* color: white */
     margin-bottom: 10px;
 }
 
-.logo{
-    display: block;
-    max-width:230px;
-    max-height:95px;
-    width: auto;
-    height: auto;
+#logo{
+    /* display: block; */
+    width:185px;
+    height:50px;
+    /* width: auto;
+    height: auto; */
 }
 
-.welcome {
+#logout{
+    float: right;
+}
+
+.welcome{
     float: right;
 }
 
 .title, #new-bolus{
-    margin-left: 20px;
+    margin-left: 35px;
 }
 
-.body{
+/* .body{
     margin-left: 50px;
-}
+} */
 
-
-/* SETTINGS PAGE */
+/* PROFILE PAGE */
 .settings-div-outer{
     /* flex-wrap: wrap; */
     text-align: center;
     width: 300px;
-    margin:0 auto;
+    margin: 0 auto;
     margin-top: 40px;
 }
 
-.settings-div-inner{
-    text-align: left;
+.settings-div-middle{
+    text-align: center;
     width: 300px;
+    /* margin: 0 auto; */
 }
 
-/* .user-specs{
-    flex-wrap: wrap;
+/* .settings-div-inner{
+    text-align: left;
 } */
+
+.user-specs{
+    text-align: center;
+    width: 350px;
+}
 
 .user-specs p, .input{
     display: inline-block;
@@ -60,9 +70,15 @@
     /* font-weight: 500; */
 }
 
-/* .user-specs .input, button{
+.user-specs .input, button{
     display: inline-block;
-} */
+}
+
+.user-specs-inner{
+    width: 300px;
+    text-align: left;
+    margin: 0 auto;
+}
 
 .input input, button{
     display: inline-block;
@@ -146,11 +162,27 @@
     text-align: center;
 }
 
-/* bolus post */
+/* bolus posts */
+
+.bolus-array{
+    /* display: inline-block; */
+    margin: 0 auto;
+    /* display: flex; */
+    display: inline-block;
+    /* flex-direction: column; */
+    text-align: center;
+    padding: 0px 0px 0px 0px 
+    /* width: 50%; */
+
+
+}
+
 .bolus-outer{
     display: inline-block;
+    align-items: center;
     width: 300px;
     margin: 5px 5px 5px 5px;
+    text-align: left;
     
 }
 
@@ -158,13 +190,17 @@
     /* display: inline-block; */
     border: 1px solid rgb(235, 229, 229);
     border-radius: 5px;
-    box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
+    /* box-shadow: 0 0 20px rgba(134, 134, 134, 0.2);  */
     margin: 0 auto;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
     width: 300px;
     padding: 10px;
+}
+
+.bolus-inner:hover{
+    box-shadow: 0 0 20px rgba(134, 134, 134, 0.2);
 }
 
 .bolus-inner #label{
@@ -207,4 +243,32 @@
     display: block;
     width: 200px;
     color: green;
+}
+
+/* FOOTER */
+footer{
+    /* background-color: rgb(163, 13, 13); */
+    /* color: rgba(129, 129, 129, 0.76); */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    /* opacity: .75 */
+}
+
+.socials{
+    display: block;
+    text-align: center;
+}
+
+.socials i{
+    margin-right: 5px;
+    opacity: .75
+}
+
+.socials i:hover{
+    opacity: 1;
+    cursor: pointer;
 }

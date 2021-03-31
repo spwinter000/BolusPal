@@ -86,58 +86,61 @@ class Profile extends Component {
         return ( 
             <div>
                 <h2 className="title">Your Settings</h2>
+                <hr/>
                 <div className="settings-div-outer">
-                    <div className="settings-div-inner">
-                    {this.state.userInfo.map((item) => (
-                        <div className="user-specs" key={item.id}>
-                                {this.state.edit ?
-                                <div>
-                                    {/* <p>User: {item.username}</p> */}
-                                    <p key={'1'}>Low threshold: </p>  
-                                    <div key={item.low_threshold} className="input">
-                                        <p>{item.low_threshold}mg/dl</p>
-                                    </div>
+                    <div className="settings-div-middle">
+                        {/* <div className="settings-div-inner"> */}
+                            {this.state.userInfo.map((item) => (
+                                <div className="user-specs" key={item.id}>
+                                        {this.state.edit ?
+                                        <div className="user-specs-inner">
+                                            {/* <p>User: {item.username}</p> */}
+                                            <p key={'1'}>Low threshold: </p>  
+                                            <div key={item.low_threshold} className="input">
+                                                <p>{item.low_threshold}mg/dl</p>
+                                            </div>
 
-                                    <p key={'2'}>High threshold: </p>  
-                                    <div key={item.high_threshold} className="input">
-                                        <p>{item.high_threshold}mg/dl</p>
-                                    </div>
+                                            <p key={'2'}>High threshold: </p>  
+                                            <div key={item.high_threshold} className="input">
+                                                <p>{item.high_threshold}mg/dl</p>
+                                            </div>
 
-                                    <p key={'3'}>Carbs per unit: </p>  
-                                    <div key={item.carbs_per_unit} className="input">
-                                        <p>{item.carbs_per_unit}mg/dl</p>
-                                    </div>
+                                            <p key={'3'}>Carbs per unit: </p>  
+                                            <div key={item.carbs_per_unit} className="input">
+                                                <p>{item.carbs_per_unit}mg/dl</p>
+                                            </div>
 
-                                    <button key={'button'} className="btn btn-primary" onClick={() => { this.setState({edit: !this.state.edit, lowThreshold: item.low_threshold, highThreshold: item.high_threshold, carbsPerUnit: item.carbs_per_unit}), (e) => this.editInfo.bind(this, e, item.carbs_per_unit) }} id="edit-button">Update Information</button>
+                                            <button key={'button'} className="btn btn-primary" onClick={() => { this.setState({edit: !this.state.edit, lowThreshold: item.low_threshold, highThreshold: item.high_threshold, carbsPerUnit: item.carbs_per_unit}), (e) => this.editInfo.bind(this, e, item.carbs_per_unit) }} id="edit-button">Update Information</button>
+                                        </div>
+                                        :
+                                        <div className="user-specs-inner">
+                                            <form onSubmit={() => this.saveInfo(this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
+                                                {/* <p>User: {item.username}</p> */}
+                                                <p key={'1'}>Low threshold: </p>  
+                                                <div key={item.low_threshold} className="input">
+                                                    <p><input type="number" name="lowThreshold" onChange={this.handleChange} value={this.state.lowThreshold}/> mg/dl </p>
+                                                </div>
+
+                                                <p key={'2'}>High threshold: </p>  
+                                                <div key={item.high_threshold} className="input">
+                                                    <p><input type="number" name="highThreshold" onChange={this.handleChange} value={this.state.highThreshold}/> mg/dl </p>
+                                                </div>
+
+                                                <p key={'3'}>Carbs per unit: </p>  
+                                                <div key={item.carbs_per_unit} className="input">
+                                                    <p><input type="number" name="carbsPerUnit" onChange={this.handleChange} value={this.state.carbsPerUnit}/> mg/dl </p>
+                                                </div>
+
+                                                <button key={'button'} className="btn btn-primary" id="edit-button">Save Information</button>
+                                            </form>
+                                        </div>
+
+                                        // (e) => this.saveInfo(e, item.low_threshold, item.high_threshold, item.carbs_per_unit)
+
+                                        }
                                 </div>
-                                :
-                                <div>
-                                    <form onSubmit={() => this.saveInfo(this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
-                                        {/* <p>User: {item.username}</p> */}
-                                        <p key={'1'}>Low threshold: </p>  
-                                        <div key={item.low_threshold} className="input">
-                                            <p><input type="number" name="lowThreshold" onChange={this.handleChange} value={this.state.lowThreshold}/> mg/dl </p>
-                                        </div>
-
-                                        <p key={'2'}>High threshold: </p>  
-                                        <div key={item.high_threshold} className="input">
-                                            <p><input type="number" name="highThreshold" onChange={this.handleChange} value={this.state.highThreshold}/> mg/dl </p>
-                                        </div>
-
-                                        <p key={'3'}>Carbs per unit: </p>  
-                                        <div key={item.carbs_per_unit} className="input">
-                                            <p><input type="number" name="carbsPerUnit" onChange={this.handleChange} value={this.state.carbsPerUnit}/> mg/dl </p>
-                                        </div>
-
-                                        <button key={'button'} className="btn btn-primary" id="edit-button">Save Information</button>
-                                    </form>
-                                </div>
-
-                                // (e) => this.saveInfo(e, item.low_threshold, item.high_threshold, item.carbs_per_unit)
-
-                                }
-                        </div>
-                        ))}
+                            ))}
+                        {/* </div> */}
                     </div>
                 </div>
                 {/* <UserInfo userInfo={this.state.userInfo} /> */}

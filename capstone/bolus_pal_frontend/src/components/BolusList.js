@@ -312,7 +312,7 @@ class BolusList extends Component {
         // this.grabLatestBolusID();
         this.getFoodsIntoBolus();
         return (
-            <div className="">
+            <div>
                 <h2 className="title">Your Boluses</h2>
                 <button className="btn btn-primary" id="new-bolus" onClick={() => this.setState({handleNewBolus: true})}>Add New Bolus</button>
                 <hr></hr>
@@ -323,7 +323,7 @@ class BolusList extends Component {
                     handleNewFoods={this.handleNewFoods}
                     loggedInID={this.props.loggedInID}
                 /> : null}
-            <ul>
+            <ul class="bolus-array">
             {this.state.data.map((item, i) => (
                 <div className="bolus-outer" key={i}>
                     <div className="bolus-inner">
