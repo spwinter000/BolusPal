@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Route, Switch, Redirect} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 import NavBar from './components/NavBar';
 import BolusList from './components/BolusList';
 import Profile from './components/Profile';
@@ -116,60 +116,66 @@ class App extends Component {
     render() {
         // console.log(this.state.loggedIn)
         return (
-            <div>
+            <div className="app_wrapper">
                 <NavBar 
                     loggedIn={this.state.loggedIn}
                     handleLogout={this.handleLogout}
                 />
-            <div className="container">
-                {this.state.loggedIn ? <p className="welcome">Hi, <b>{this.state.loggedInUsername}</b>!</p> : <p className="welcome"></p>}
-            </div>
-                <Switch>
-                    <Route path="/register"
-                        component={() => 
-                            <SignupForm 
-                                loggedIn={this.state.loggedIn}
-                                usernameError={this.state.usernameError}
-                                passwordError={this.state.passwordError}
-                                success={this.state.success}
-                                handleSignup={this.handleSignup}
-                            />}
+                <div className="content-wrap">
+                <div className="welcome-container">
+                    {this.state.loggedIn ? <p className="welcome">Hi, <b>{this.state.loggedInUsername}</b>!</p> : <p className="welcome"></p>}
+                </div>
+                    <Switch>
+                        <Route path="/register"
+                            component={() => 
+                                <SignupForm 
+                                    loggedIn={this.state.loggedIn}
+                                    usernameError={this.state.usernameError}
+                                    passwordError={this.state.passwordError}
+                                    success={this.state.success}
+                                    handleSignup={this.handleSignup}
+                                />}
+                            />
+                        <Route path="/boluses" 
+                            component={() => 
+                                <BolusList
+                                    loggedInUsername={this.state.loggedInUsername}
+                                    loggedInID={this.state.loggedInID}
+                                />}
+                            />
+                        <Route path="/login" 
+                            component={() => 
+                                <LoginForm 
+                                    loggedIn={this.state.loggedIn}
+                                    handleLogin={this.handleLogin}
+                                />}
+                            />
+                        <Route path="/profile" 
+                            component={() => 
+                                <Profile 
+                                    loggedIn={this.state.loggedIn}
+                                    loggedInID={this.state.loggedInID}
+                                />}
                         />
-                    <Route path="/boluses" 
-                        component={() => 
-                            <BolusList
-                                loggedInUsername={this.state.loggedInUsername}
-                                loggedInID={this.state.loggedInID}
-                            />}
-                        />
-                    <Route path="/login" 
-                        component={() => 
-                            <LoginForm 
-                                loggedIn={this.state.loggedIn}
-                                handleLogin={this.handleLogin}
-                            />}
-                        />
-                    <Route path="/profile" 
-                        component={() => 
-                            <Profile 
-                                loggedIn={this.state.loggedIn}
-                                loggedInID={this.state.loggedInID}
-                            />}
-                    />
-                </Switch>
-                <footer>
-                    <hr></hr>
-                    <i class="far fa-copyright fa-lg"></i>2021 Created by Scott Winter
-                    <br/>
-                    Follow us: 
-                    <div className="socials">
-                        <i className="fab fa-twitter fa-lg"></i>
-                        <i className="fab fa-instagram fa-lg"></i>
-                        <i className="fab fa-facebook fa-lg"></i>
-                        <i className="fab fa-google-plus-g fa-lg"></i>
-                        <i className="fab fa-pinterest fa-lg"></i>
-                    </div>
-                </footer>
+                    </Switch>
+                    {/* <div className="container2"> */}
+                        {/* <hr/> */}
+                        <footer>
+                            <div className="copyright">
+                                <small><i class="far fa-copyright"></i> BolusPal, Inc.</small>
+                            </div>
+                            {/* <br/> */}
+                            Follow us: 
+                            <div className="socials">
+                                <i className="fab fa-twitter fa-lg"></i>
+                                <i className="fab fa-instagram fa-lg"></i>
+                                <i className="fab fa-facebook fa-lg"></i>
+                                <i className="fab fa-google-plus-g fa-lg"></i>
+                                <i className="fab fa-pinterest fa-lg"></i>
+                            </div>
+                        </footer>
+                    {/* </div> */}
+                </div>
             </div>
         );
     }
