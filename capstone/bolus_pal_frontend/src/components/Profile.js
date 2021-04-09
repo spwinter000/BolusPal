@@ -95,40 +95,40 @@ class Profile extends Component {
                                         {this.state.edit ?
                                         <div className="user-specs-inner">
                                             {/* <p>User: {item.username}</p> */}
-                                            <p key={'1'}>Low threshold: </p>  
+                                            <p key={'1'} id="spec-label">Low threshold: </p>  
                                             <div key={item.low_threshold} className="input">
-                                                <p>{item.low_threshold}mg/dl</p>
+                                                <p id="spec">{item.low_threshold}mg/dl</p>
                                             </div>
 
-                                            <p key={'2'}>High threshold: </p>  
+                                            <p key={'2'} id="spec-label">High threshold: </p>  
                                             <div key={item.high_threshold} className="input">
-                                                <p>{item.high_threshold}mg/dl</p>
+                                                <p id="spec">{item.high_threshold}mg/dl</p>
                                             </div>
 
-                                            <p key={'3'}>Carbs per unit: </p>  
+                                            <p key={'3'} id="spec-label">Carbs per unit: </p>  
                                             <div key={item.carbs_per_unit} className="input">
-                                                <p>{item.carbs_per_unit}mg/dl</p>
+                                                <p id="spec">{item.carbs_per_unit}mg/dl</p>
                                             </div>
 
                                             <button key={'button'} className="btn btn-primary" onClick={() => { this.setState({edit: !this.state.edit, lowThreshold: item.low_threshold, highThreshold: item.high_threshold, carbsPerUnit: item.carbs_per_unit}), (e) => this.editInfo.bind(this, e, item.carbs_per_unit) }} id="edit-button">Update Information</button>
                                         </div>
                                         :
                                         <div className="user-specs-inner">
-                                            <form onSubmit={() => this.saveInfo(this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
+                                            <form className="spec-form" onSubmit={() => this.saveInfo(this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
                                                 {/* <p>User: {item.username}</p> */}
-                                                <p key={'1'}>Low threshold: </p>  
+                                                <p key={'1'} id="spec-label">Low threshold: </p>  
                                                 <div key={item.low_threshold} className="input">
-                                                    <p><input type="number" name="lowThreshold" onChange={this.handleChange} value={this.state.lowThreshold}/> mg/dl </p>
+                                                    <p id="spec"><input type="number" name="lowThreshold" onChange={this.handleChange} value={this.state.lowThreshold}/> mg/dl </p>
                                                 </div>
 
-                                                <p key={'2'}>High threshold: </p>  
+                                                <p key={'2'} id="spec-label">High threshold: </p>  
                                                 <div key={item.high_threshold} className="input">
-                                                    <p><input type="number" name="highThreshold" onChange={this.handleChange} value={this.state.highThreshold}/> mg/dl </p>
+                                                    <p id="spec"><input type="number" name="highThreshold" onChange={this.handleChange} value={this.state.highThreshold}/> mg/dl </p>
                                                 </div>
 
-                                                <p key={'3'}>Carbs per unit: </p>  
+                                                <p key={'3'} id="spec-label">Carbs per unit: </p>  
                                                 <div key={item.carbs_per_unit} className="input">
-                                                    <p><input type="number" name="carbsPerUnit" onChange={this.handleChange} value={this.state.carbsPerUnit}/> mg/dl </p>
+                                                    <p id="spec"><input type="number" name="carbsPerUnit" onChange={this.handleChange} value={this.state.carbsPerUnit}/> mg/dl </p>
                                                 </div>
 
                                                 <button key={'button'} className="btn btn-primary" id="edit-button">Save Information</button>

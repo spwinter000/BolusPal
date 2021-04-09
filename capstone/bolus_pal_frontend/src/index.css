@@ -39,16 +39,22 @@
 /* PROFILE PAGE */
 .settings-div-outer{
     /* flex-wrap: wrap; */
-    text-align: center;
-    width: 300px;
-    margin: 0 auto;
-    margin-top: 40px;
+    /* text-align: center; */
+    /* width: 300px; */
+    /* margin: 0 auto; */
+    margin-top: 150px;
+    position: relative;
 }
 
 .settings-div-middle{
-    text-align: center;
-    width: 300px;
-    /* margin: 0 auto; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    /* display: block;
+    margin-left: auto;
+    margin-right: auto; */
 }
 
 /* .settings-div-inner{
@@ -57,21 +63,34 @@
 
 .user-specs{
     text-align: center;
-    width: 350px;
+    /* width: 350px; */
 }
 
 .user-specs p, .input{
     display: inline-block;
-    line-height: 25px;
+    /* line-height: 25px; */
 }
 
 .user-specs input{
+    margin-left: 10px;
     display: inline-block;
     width: 50px;
 }
 
-.user-specs p{
-    margin-right: 10px;
+.user-specs #spec-label{
+    margin-left: 40px;
+    /* display: inline-block; */
+    width: 200px;
+    text-align: right;
+    /* font-weight: 500; */
+}
+
+.user-specs #spec{
+    margin-left: 10px;
+    /* margin-right: 10px; */
+    /* display: inline-block; */
+    width: 200px;
+    text-align: left;
     /* font-weight: 500; */
 }
 
@@ -80,9 +99,9 @@
 }
 
 .user-specs-inner{
-    width: 300px;
-    text-align: left;
-    margin: 0 auto;
+    width: 450px;
+    text-align: center;
+    /* margin: 0 auto; */
 }
 
 .input input, button{
@@ -91,7 +110,13 @@
 
 .input p, button{
     display: inline-block;
-} 
+}
+
+.spec-form{
+    margin-right: 40px;
+    width: 450px;
+    text-align: center;
+}
 
 
 
@@ -99,12 +124,12 @@
 
 /* New Bolus */
 .new-bolus-form{
-    border: 1px solid rgb(235, 229, 229);
+    /* border: 1px solid rgb(235, 229, 229); */
     border-radius: 5px;
-    box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
+    /* box-shadow: 0 0 20px rgba(134, 134, 134, 0.2);  */
     margin-left: 20px;
     margin-top: 10px;
-    width: 500px;
+    width: 60%;
 }
 
 .new-bolus-form-inner{
@@ -113,18 +138,75 @@
 }
 
 #new-bolus-button-x{
+    cursor: pointer;
+    color: rgb(156, 154, 154);
     float: right;
 }
 
+.test{
+    width: 350px;
+}
+
+#bloodSugarDiv label{
+    /* float: left; */
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+    /* text-align: justify; */
+}
+
+#bloodSugarDiv input{
+    float: right;
+}
+
+#new-form label{
+    /* float: left; */
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+}
+
+#new-form input,span,a{
+    float: right;
+}
+
+/* #new-form span, a{
+    width: 100px;
+    text-align: left;
+} */
+
+
+#reset-button{
+    margin-left: 50px;
+    /* display: inline-block; */
+    /* float: right; */
+    /* width: 200px; */
+}
+
+.new-food-table{
+    margin-left: 115px;
+    width: 375px;
+}
+
+/* #bloodSugarDiv, .errors_hint{
+    display: inline-block;
+} */
+
+/* #bloodSugarDiv{
+    float: left;
+} */
+
 
 .errors_hint{
-    background: #d45252;
+    background: rgb(197, 9, 9);
     border-radius: 3px 3px 3px 3px;
     color: white;
     margin-left: 8px;
     padding: 1px 6px;
-    z-index: 999; /* hints stay above all other elements */
-    position: absolute; /* allows proper formatting if hint is two lines */
+    width: 300px;
+    /* float: right; */
+    /* z-index: 999; hints stay above all other elements */
+    /* position: absolute; allows proper formatting if hint is two lines */
     /* transition-delay: 2s; */
 }
 
@@ -144,6 +226,11 @@
 #input-value{
     width: 100px;
 }
+
+/* possibly remove */
+/* #input-value-2{
+    width: 100px;
+} */
 
 #input-value-2:nth-child(n+2){
     margin-left: 5px;

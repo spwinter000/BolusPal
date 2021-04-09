@@ -162,7 +162,7 @@ class App extends Component {
                         {/* <hr/> */}
                         <footer>
                             <div className="copyright">
-                                <small><i class="far fa-copyright"></i> BolusPal, Inc.</small>
+                                <small><i className="far fa-copyright"></i> BolusPal, Inc.</small>
                             </div>
                             {/* <br/> */}
                             Follow us: 

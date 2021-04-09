@@ -323,7 +323,7 @@ class BolusList extends Component {
                     handleNewFoods={this.handleNewFoods}
                     loggedInID={this.props.loggedInID}
                 /> : null}
-            <ul class="bolus-array">
+            <ul className="bolus-array">
             {this.state.data.map((item, i) => (
                 <div className="bolus-outer" key={i}>
                     <div className="bolus-inner">
