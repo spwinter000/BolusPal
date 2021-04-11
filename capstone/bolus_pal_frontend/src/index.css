@@ -7,8 +7,12 @@
     margin-bottom: 10px;
 }
 
-.navbarNav{
-    background-color: gray;
+.navbar-collapse{
+    background-color: white;
+}
+
+.navbar-nav{
+    margin: 0;
 }
 
 #logo{
