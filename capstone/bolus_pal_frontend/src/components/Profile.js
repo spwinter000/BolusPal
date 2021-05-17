@@ -10,16 +10,12 @@ class Profile extends Component {
             loaded: false,
             placeholder: "Loading",
             edit: true,
-            // editInfo: {},
             highThreshold: '',
             lowThreshold: '',
             carbsPerUnit: ''
         }
         this._isMounted = false;
         this.handleChange = this.handleChange.bind(this);
-        // this.editInfo = this.editInfo.bind(this);
-        // this.keyCount = 0;
-        // this.getKey = this.getKey.bind(this);
     }
 
     handleChange(event){
@@ -36,9 +32,6 @@ class Profile extends Component {
                     newArr.push(user);
                 }
             }
-            // if(newArr.length === 0){
-            //     console.log('this user has no userInfo')
-            // }
             if(this._isMounted) {
                 this.setState({
                     userInfo: newArr,
@@ -50,8 +43,6 @@ class Profile extends Component {
     }
 
     saveInfo(low, high, carbs){
-        // console.log('function called');
-        // event.preventDefault();
         axiosInstance.put(`api/userinfos/${this.state.userInfo[0].id}/`, {
             user: this.props.loggedInID,
             low_threshold: parseInt(low),
@@ -89,12 +80,10 @@ class Profile extends Component {
                 <hr/>
                 <div className="settings-div-outer">
                     <div className="settings-div-middle">
-                        {/* <div className="settings-div-inner"> */}
                             {this.state.userInfo.map((item) => (
                                 <div className="user-specs" key={item.id}>
                                         {this.state.edit ?
                                         <div className="user-specs-inner">
-                                            {/* <p>User: {item.username}</p> */}
                                             <p key={'1'} id="spec-label">Low threshold: </p>  
                                             <div key={item.low_threshold} className="input">
                                                 <p id="spec">{item.low_threshold}mg/dl</p>
@@ -115,7 +104,6 @@ class Profile extends Component {
                                         :
                                         <div className="user-specs-inner">
                                             <form className="spec-form" onSubmit={() => this.saveInfo(this.state.lowThreshold, this.state.highThreshold, this.state.carbsPerUnit)}>
-                                                {/* <p>User: {item.username}</p> */}
                                                 <p key={'1'} id="spec-label">Low threshold: </p>  
                                                 <div key={item.low_threshold} className="input">
                                                     <p id="spec"><input type="number" name="lowThreshold" onChange={this.handleChange} value={this.state.lowThreshold}/> mg/dl </p>
@@ -134,16 +122,11 @@ class Profile extends Component {
                                                 <button key={'button'} className="btn btn-primary" id="edit-button">Save Information</button>
                                             </form>
                                         </div>
-
-                                        // (e) => this.saveInfo(e, item.low_threshold, item.high_threshold, item.carbs_per_unit)
-
                                         }
                                 </div>
                             ))}
-                        {/* </div> */}
                     </div>
                 </div>
-                {/* <UserInfo userInfo={this.state.userInfo} /> */}
             </div>
          );
     }
