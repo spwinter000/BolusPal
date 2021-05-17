@@ -1,9 +1,6 @@
 import React, { Component }from 'react';
 import { getCookie } from './../getCookie';
 import axiosInstance from './../AxiosApi';
-// import numberRollup from "number-rollup";
-
-// import NewBolus from './NewBolus';
 
 class NewBolus extends Component {
     constructor(props){
@@ -24,7 +21,6 @@ class NewBolus extends Component {
             bolusTotal: 0,
         }
         this.handleChange = this.handleChange.bind(this);
-        // this.fetchUserInfo = this.fetchUser.bind(this);
         this.addFoodToForm = this.addFoodToForm.bind(this);
         this.submitNewBolus = this.submitNewBolus.bind(this);
     }
@@ -44,24 +40,9 @@ class NewBolus extends Component {
         }
     }
 
-    // get user info for boluses
-    // fetchUser(){
-    //     axiosInstance.get(`api/users/${this.props.loggedInID}`)
-    //     // .then(response => {
-    //     //     return response.json();
-    //     // })
-    //     .then(userInfo => {
-    //     this.setState({
-    //         userInfo: userInfo.data
-    //     });
-    //     // console.log(this.state.userInfo)
-    //     });
-    // }
-
     fetchUserInfo(){
         axiosInstance.get(`api/userinfos/`)
         .then(result => {
-            // console.log(result.data)
             let newArr = [];
             for (let user of result.data){
                 if (user.user === this.props.loggedInID){
@@ -84,16 +65,12 @@ class NewBolus extends Component {
     fetchLatestBolusID(){
         this._isMounted = true;
         axiosInstance.get('api/boluses/')
-        // .then(response => response.json())
         .then(result => {
-            // console.log(result)
-            // const loggedInID = this.props.loggedInID;
             if (result.data.length === 0){
                 this.setState({
                     latestBolus: 0
                 }, () =>  console.log(this.state.latestBolus));
             }
-            // else if (result.data[0].user === loggedInID && this._isMounted){
             else if (this._isMounted){
                 this.setState({
                     latestBolus: result.data[0].id + 1
@@ -118,10 +95,10 @@ class NewBolus extends Component {
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input className="form-control" name="foodName" autoFocus type="text" id="input-value-2" onChange={this.handleChange} value={this.state.foodName} required/></td>
-                        <td><input className="form-control" name="carbs" autoFocus type="number" min="0" id="input-value-2" onChange={this.handleChange} value={this.state.carbs} required/></td>
-                        <td><input className="form-control" name="servings" autoFocus type="number" min="0" step="0.5" id="input-value-2" onChange={this.handleChange} value={this.state.servings} required/></td>
-                        <td><button className="btn btn-primary" id="new-food-button" onClick={e => this.addFoodToForm(e)}>Add</button></td>
+                        <td><form id="food_form"><input className="form-control" name="foodName" autoFocus type="text" id="input-value-2" onChange={this.handleChange} value={this.state.foodName} required/></form></td>
+                        <td><input form="food_form" className="form-control" name="carbs" autoFocus type="number" min="0" id="input-value-2" onChange={this.handleChange} value={this.state.carbs} required/></td>
+                        <td><input form="food_form" className="form-control" name="servings" autoFocus type="number" min="0" step="0.5" id="input-value-2" onChange={this.handleChange} value={this.state.servings} required/></td>
+                        <td><button form="food_form" className="btn btn-primary" id="new-food-button" onClick={e => this.addFoodToForm(e)}>Add</button></td>
                     </tr>
                     {/* once foods are added, show them below the input fields */}
                         {this.state.foodAdded.map((item, i) => (
@@ -245,25 +222,27 @@ class NewBolus extends Component {
     }
 
     componentDidMount(){
-        // this.fetchUser();
         this.fetchUserInfo();
         this.fetchLatestBolusID();
-        // this.props.fetchLatestBolusID();
     }
 
-    submitNewBolus(){
-        this.props.handleNewBolus(this.state)
-        // this.props.fetchLatestBolusID();
-        // .then(() => this.props.fetchLatestBolusID())
-        .then(() => this.props.handleNewFoods(this.state.foodAdded, this.state))
-        // this.props.handleNewFoods(this.state.foodAdded, this.state);
+    submitNewBolus(e){
+        e.preventDefault();
+        return new Promise((resolve) => {
+            resolve(this.props.handleNewBolus(this.state));
+        })
+        .then(setTimeout(() => this.props.handleNewFoods(this.state.foodAdded, this.state), 200))
+        .then(setTimeout(() => this.props.getBoluses(), 400)) //call getBoluses and getFoods to update BolusList state with new submitted bolus
+        .then(setTimeout(() => this.props.getFoods(), 650))
+        .catch(error => {
+            throw error;
+        });
     }
-    // () => { this.submitNewBolus(), this.props.handleNewFoods(this.state.foodAdded); }
 
     render(){
         return (
             <div>
-                <form className="new-bolus-form" onSubmit={() => this.submitNewBolus()}>
+                <form className="new-bolus-form">
                     <div className="new-bolus-form-inner">
                             <p id="new-bolus-button-x" onClick={(e) => this.props.handleExitNewBolusForm(e)}>X</p>
                             <div className="test">
@@ -290,7 +269,7 @@ class NewBolus extends Component {
                             </div>
                             {/* <div class="form-group" id="submit-bolus"> */}
                             <button className="btn btn-secondary" id="reset-button" onClick={(e) => this.resetForm(e)}>Reset Form</button>
-                            <button className="btn btn-primary" id="submit-bolus" type="submit">Submit</button>
+                            <button className="btn btn-primary" id="submit-bolus" onClick={(e) => {this.submitNewBolus(e), this.props.handleExitNewBolusForm(e)}} type="submit">Submit</button>
                     </div>
                 </form>
             </div>

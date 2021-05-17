@@ -3,7 +3,6 @@
     height: 70px;
     border-radius: 5px;
     box-shadow: 0 0 20px rgba(134, 134, 134, 0.2); 
-    /* color: white */
     margin-bottom: 10px;
 }
 
@@ -16,16 +15,9 @@
 }
 
 #logo{
-    /* display: block; */
     width:185px;
     height:50px;
-    /* width: auto;
-    height: auto; */
 }
-
-/* #logout{
-    float: right;
-} */
 
 .welcome-container{
     float: right;
@@ -42,10 +34,6 @@
 
 /* PROFILE PAGE */
 .settings-div-outer{
-    /* flex-wrap: wrap; */
-    /* text-align: center; */
-    /* width: 300px; */
-    /* margin: 0 auto; */
     margin-top: 150px;
     position: relative;
 }
@@ -56,23 +44,15 @@
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    /* display: block;
-    margin-left: auto;
-    margin-right: auto; */
 }
 
-/* .settings-div-inner{
-    text-align: left;
-} */
 
 .user-specs{
     text-align: center;
-    /* width: 350px; */
 }
 
 .user-specs p, .input{
     display: inline-block;
-    /* line-height: 25px; */
 }
 
 .user-specs input{
@@ -83,19 +63,14 @@
 
 .user-specs #spec-label{
     margin-left: 40px;
-    /* display: inline-block; */
     width: 200px;
     text-align: right;
-    /* font-weight: 500; */
 }
 
 .user-specs #spec{
     margin-left: 10px;
-    /* margin-right: 10px; */
-    /* display: inline-block; */
     width: 200px;
     text-align: left;
-    /* font-weight: 500; */
 }
 
 .user-specs .input, button{
@@ -105,7 +80,6 @@
 .user-specs-inner{
     width: 450px;
     text-align: center;
-    /* margin: 0 auto; */
 }
 
 .input input, button{
@@ -128,16 +102,13 @@
 
 /* New Bolus */
 .new-bolus-form{
-    /* border: 1px solid rgb(235, 229, 229); */
     border-radius: 5px;
-    /* box-shadow: 0 0 20px rgba(134, 134, 134, 0.2);  */
     margin-left: 20px;
     margin-top: 10px;
     width: 60%;
 }
 
 .new-bolus-form-inner{
-    /* display: flex; */
     margin: 10px 10px 10px 10px;
 }
 
@@ -152,11 +123,9 @@
 }
 
 #bloodSugarDiv label{
-    /* float: left; */
     display: inline-block;
     width: 200px;
     text-align: right;
-    /* text-align: justify; */
 }
 
 #bloodSugarDiv input{
@@ -164,7 +133,6 @@
 }
 
 #new-form label{
-    /* float: left; */
     display: inline-block;
     width: 200px;
     text-align: right;
@@ -174,17 +142,9 @@
     float: right;
 }
 
-/* #new-form span, a{
-    width: 100px;
-    text-align: left;
-} */
-
 
 #reset-button{
     margin-left: 50px;
-    /* display: inline-block; */
-    /* float: right; */
-    /* width: 200px; */
 }
 
 .new-food-table{
@@ -192,13 +152,6 @@
     width: 375px;
 }
 
-/* #bloodSugarDiv, .errors_hint{
-    display: inline-block;
-} */
-
-/* #bloodSugarDiv{
-    float: left;
-} */
 
 
 .errors_hint{
@@ -208,10 +161,6 @@
     margin-left: 8px;
     padding: 1px 6px;
     width: 300px;
-    /* float: right; */
-    /* z-index: 999; hints stay above all other elements */
-    /* position: absolute; allows proper formatting if hint is two lines */
-    /* transition-delay: 2s; */
 }
 
 #new-food{
@@ -230,11 +179,6 @@
 #input-value{
     width: 100px;
 }
-
-/* possibly remove */
-/* #input-value-2{
-    width: 100px;
-} */
 
 #input-value-2:nth-child(n+2){
     margin-left: 5px;
@@ -259,16 +203,11 @@
 }
 
 /* bolus posts */
-
 .bolus-array{
-    /* display: inline-block; */
     margin: 0 auto;
-    /* display: flex; */
     display: inline-block;
-    /* flex-direction: column; */
     text-align: center;
     padding: 0px 0px 0px 0px 
-    /* width: 50%; */
 
 
 }
@@ -283,10 +222,8 @@
 }
 
 .bolus-inner{
-    /* display: inline-block; */
     border: 1px solid rgb(235, 229, 229);
     border-radius: 5px;
-    /* box-shadow: 0 0 20px rgba(134, 134, 134, 0.2);  */
     margin: 0 auto;
     margin-left: 10px;
     margin-right: 10px;
@@ -315,7 +252,6 @@
 .login{
     position: absolute;
     margin-top: 170px;
-    /* top: 30%; */
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
@@ -324,11 +260,9 @@
 .register{
     position: absolute;
     margin-top: 170px;
-    /* top: 30%; */
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    /* border: 1px solid black; */
 }
 
 .form-group small {
@@ -345,19 +279,11 @@
 .app_wrapper{
     position: relative;
     min-height: 100vh;
-    /* min-height: 100%;
-    margin-bottom: -100px;
-    padding-bottom: 100px; */
 }
 
 .content-wrap {
     padding-bottom: 12rem;    /* Footer height */
 }
-
-/* .container2{
-    display: flex;
-    flex-direction: column;
-} */
 
 footer{
     background-color: rgb(235, 235, 235);
@@ -376,7 +302,6 @@ footer{
     margin-top: 10px;
     margin-bottom: 10px;
     display: block;
-    /* text-align: center; */
 }
 
 .socials i{

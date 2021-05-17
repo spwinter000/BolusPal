@@ -122,9 +122,9 @@ class App extends Component {
                     handleLogout={this.handleLogout}
                 />
                 <div className="content-wrap">
-                <div className="welcome-container">
-                    {this.state.loggedIn ? <p className="welcome">Hi, <b>{this.state.loggedInUsername}</b>!</p> : <p className="welcome"></p>}
-                </div>
+                    <div className="welcome-container">
+                        {this.state.loggedIn ? <p className="welcome">Hi, <b>{this.state.loggedInUsername}</b>!</p> : <p className="welcome"></p>}
+                    </div>
                     <Switch>
                         <Route path="/register"
                             component={() => 
@@ -158,13 +158,10 @@ class App extends Component {
                                 />}
                         />
                     </Switch>
-                    {/* <div className="container2"> */}
-                        {/* <hr/> */}
                         <footer>
                             <div className="copyright">
                                 <small><i className="far fa-copyright"></i> BolusPal, Inc.</small>
                             </div>
-                            {/* <br/> */}
                             Follow us: 
                             <div className="socials">
                                 <i className="fab fa-twitter fa-lg"></i>
@@ -174,7 +171,6 @@ class App extends Component {
                                 <i className="fab fa-pinterest fa-lg"></i>
                             </div>
                         </footer>
-                    {/* </div> */}
                 </div>
             </div>
         );

@@ -66,21 +66,6 @@ class UserCreate(APIView):
         return Response(user_serializer.errors, userinfo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-        # if userinfo_serializer.is_valid():
-        #     user = userinfo_serializer.save()
-        #     if user:
-        #         json = userinfo_serializer.data
-        #         return Response(json, status=status.HTTP_201_CREATED)
-        # return Response(userinfo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        # original 
-        # if user_serializer.is_valid():
-        #     user = user_serializer.save()
-        #     if user:
-        #         json = user_serializer.data
-        #         return Response(json, status=status.HTTP_201_CREATED)
-        # return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.

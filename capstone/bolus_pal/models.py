@@ -4,11 +4,6 @@ from django.db import models
 class User(AbstractUser):
     pass
 
-# class CustomUser(AbstractUser):
-#     high_threshold = models.IntegerField(default=120)
-#     low_threshold = models.IntegerField(default=80)
-#     carbs_per_unit = models.IntegerField(default=10)
-
 class UserInfo(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     high_threshold = models.IntegerField(default=120)
